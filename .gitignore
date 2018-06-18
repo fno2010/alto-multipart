@@ -7,3 +7,5 @@ lib/
 
 # Do not upload the generated file
 draft-*-alto-multipart-latest.txt
+lib
+draft-tbd-alto-multipart.xml
