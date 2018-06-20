@@ -1,0 +1,654 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Multiple ALTO Resources Query Using Multipart Message</title>
+
+  
+<style type="text/css">/*<![CDATA[*/
+
+body {
+  font: 16px "Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
+  color: #333;
+  font-size-adjust: 0.5;
+  line-height: 24px;
+  margin: 75px auto;
+  max-width: 624px;
+  padding: 0 5px;
+}
+
+.title, .filename, h1, h2, h3, h4, h5 {
+  font: 16px "Roboto Condensed","Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
+  font-size-adjust: 0.5;
+  font-weight: bold;
+  color: #333;
+  line-height: 100%;
+  margin: 0.8em 0 0.3em;
+}
+.title, #rfc\.title h1 { font-size: 32px; }
+h1, section h1, h2, section h2, section h3, nav h2 { font-size: 20px; }
+h3, section h4, h4, section h5 { font-size: 16px; }
+h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
+  color: #333;
+}
+
+table {
+  margin-left: 0em;
+  border-collapse: collapse;
+}
+th {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+  vertical-align: top;
+}
+tr:nth-child(2n+1) > td,
+tr:nth-child(2n+1) > th {
+  background-color: #f9f9f9;
+}
+td.reference {
+  max-width: 200px;
+  border-top: none;
+  padding-right: 1em;
+}
+.right {
+  text-align: right;
+}
+
+
+table.header, table#rfc\.headerblock {
+  width: 100%;
+}
+table.header td, table#rfc\.headerblock td {
+  border: none;
+  background-color: transparent;
+  color: black;
+  padding: 0;
+}
+.filename {
+  display: block;
+  color: rgb(119, 119, 119);
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 100%;
+  margin: 10px 0 32px;
+}
+#rfc\.abstract+p, #rfc\.abstract p {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+samp, tt, code, pre {
+  font: 15px Consolas, monospace;
+  font-size-adjust: none;
+}
+pre {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  overflow-x: auto;
+  padding: 5px;
+  margin: 5px;
+}
+.figure, caption {
+  font-style: italic;
+  margin: 0 1.5em;
+  text-align: left;
+}
+
+address {
+  margin: 16px 2px;
+  line-height: 20px;
+}
+.vcard {
+  font-style: normal;
+}
+.vcardline {
+  display: block;
+}
+.vcardline .fn, address b {
+  font-weight: normal;
+}
+.vcardline .hidden {
+  display: none;
+}
+
+dl {
+  margin-left: 1em;
+}
+dl.dl-horizontal: {
+  margin-left: 0;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+hr.noprint {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #2a6496;
+}
+a[href]:hover {
+  background-color: #eee;
+}
+
+ol, ul, li, p {
+  padding: 0;
+  margin: 0.5em 0 0.5em 2em;
+}
+li, p {
+  margin-left: 0;
+}
+address {
+  font-style: normal;
+}
+
+ul.toc ul {
+  margin: 0 0 0 2em;
+}
+ul.toc li {
+  list-style: none;
+  margin: 0;
+}
+
+@media screen and (min-width: 924px) {
+  body {
+    padding-right: 350px;
+  }
+  body>ul.toc, body>#rfc\.toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 500px);
+    width: 300px;
+    z-index: 1;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  body>#rfc\.toc {
+    top: 55px;
+  }
+  body>ul.toc {
+    top: 100px;
+  }
+
+  ul.toc {
+    margin: 0 0 0 4px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+  ul.toc ul {
+    margin-left: 1.2em;
+  }
+}
+
+.github-fork-ribbon-wrapper {
+  display: none;
+}
+@media screen and (min-width: 800px) {
+  /* "Fork me on GitHub" CSS ribbon based on
+   * https://github.com/simonwhitaker/github-fork-ribbon-css
+   */
+  .github-fork-ribbon {
+    position: absolute;
+    padding: 2px 0;
+    background-color: #a00;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    font: 700 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    pointer-events: auto;
+
+    top: 38px;
+    right: -45px;
+
+    transform: rotate(45deg);
+  }
+
+  .github-fork-ribbon a[href],
+  .github-fork-ribbon a[href]:hover {
+    color: #fff;
+    background-color: transparent;
+    text-decoration: none;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.5);
+    text-align: center;
+
+    width: 190px;
+    line-height: 18px;
+
+    display: inline-block;
+    padding: 2px 0;
+
+    border: 1.5px dotted #fff;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .github-fork-ribbon-wrapper {
+    display: block;
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    overflow: hidden;
+    top: 0; right: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .github-fork-ribbon-wrapper {
+    position: fixed;
+  }
+/*]]>*/</style>
+<meta name="viewport" content="initial-scale=1.0">
+
+
+  <link href="#rfc.toc" rel="Contents">
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
+<link href="#rfc.section.1.1" rel="Chapter" title="1.1 Background">
+<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Terminologies">
+<link href="#rfc.section.2" rel="Chapter" title="2 Use Cases">
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Simple Batch Query">
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Properties Constrained Query">
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Path Vector Query">
+<link href="#rfc.section.3" rel="Chapter" title="3 Requirements">
+<link href="#rfc.section.4" rel="Chapter" title="4 Overview of Approach">
+<link href="#rfc.section.5" rel="Chapter" title="5 Multipart Query Service">
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Media Type">
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 HTTP Method">
+<link href="#rfc.section.5.3" rel="Chapter" title="5.3 Accept Input Parameters">
+<link href="#rfc.section.5.4" rel="Chapter" title="5.4 Capabilities">
+<link href="#rfc.section.5.5" rel="Chapter" title="5.5 Uses">
+<link href="#rfc.section.5.6" rel="Chapter" title="5.6 Response">
+<link href="#rfc.section.6" rel="Chapter" title="6 Examples">
+<link href="#rfc.section.7" rel="Chapter" title="7 Compatibility">
+<link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations">
+<link href="#rfc.section.9" rel="Chapter" title="9 IANA Considerations">
+<link href="#rfc.section.9.1" rel="Chapter" title="9.1 application/alto-* Media Types">
+<link href="#rfc.section.10" rel="Chapter" title="10 Acknowledgements">
+<link href="#rfc.references" rel="Chapter" title="11 References">
+<link href="#rfc.references.1" rel="Chapter" title="11.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="11.2 Informative References">
+<link href="#rfc.authors" rel="Chapter">
+
+
+  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Chen, S. and J. Zhang" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-tbd-alto-multipart-latest" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-21" />
+  <meta name="dct.abstract" content="An extension to support the multiple ALTO resources query." />
+  <meta name="description" content="An extension to support the multiple ALTO resources query." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+<td class="left">ALTO</td>
+<td class="right">S. Chen</td>
+</tr>
+<tr>
+<td class="left">Internet-Draft</td>
+<td class="right">J. Zhang</td>
+</tr>
+<tr>
+<td class="left">Intended status: Experimental</td>
+<td class="right">Tongji University</td>
+</tr>
+<tr>
+<td class="left">Expires: December 23, 2018</td>
+<td class="right">June 21, 2018</td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">Multiple ALTO Resources Query Using Multipart Message<br />
+  <span class="filename">draft-tbd-alto-multipart-latest</span></p>
+  
+  <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
+<p>An extension to support the multiple ALTO resources query.</p>
+<h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on December 23, 2018.</p>
+<h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
+<p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a>
+</li>
+<ul><li>1.1.   <a href="#rfc.section.1.1">Background</a>
+</li>
+<li>1.2.   <a href="#rfc.section.1.2">Terminologies</a>
+</li>
+</ul><li>2.   <a href="#rfc.section.2">Use Cases</a>
+</li>
+<ul><li>2.1.   <a href="#rfc.section.2.1">Simple Batch Query</a>
+</li>
+<li>2.2.   <a href="#rfc.section.2.2">Properties Constrained Query</a>
+</li>
+<li>2.3.   <a href="#rfc.section.2.3">Path Vector Query</a>
+</li>
+</ul><li>3.   <a href="#rfc.section.3">Requirements</a>
+</li>
+<li>4.   <a href="#rfc.section.4">Overview of Approach</a>
+</li>
+<li>5.   <a href="#rfc.section.5">Multipart Query Service</a>
+</li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">Media Type</a>
+</li>
+<li>5.2.   <a href="#rfc.section.5.2">HTTP Method</a>
+</li>
+<li>5.3.   <a href="#rfc.section.5.3">Accept Input Parameters</a>
+</li>
+<li>5.4.   <a href="#rfc.section.5.4">Capabilities</a>
+</li>
+<li>5.5.   <a href="#rfc.section.5.5">Uses</a>
+</li>
+<li>5.6.   <a href="#rfc.section.5.6">Response</a>
+</li>
+</ul><li>6.   <a href="#rfc.section.6">Examples</a>
+</li>
+<li>7.   <a href="#rfc.section.7">Compatibility</a>
+</li>
+<li>8.   <a href="#rfc.section.8">Security Considerations</a>
+</li>
+<li>9.   <a href="#rfc.section.9">IANA Considerations</a>
+</li>
+<ul><li>9.1.   <a href="#rfc.section.9.1">application/alto-* Media Types</a>
+</li>
+</ul><li>10.   <a href="#rfc.section.10">Acknowledgements</a>
+</li>
+<li>11.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>11.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>11.2.   <a href="#rfc.references.2">Informative References</a>
+</li>
+</ul><li><a href="#rfc.authors">Authors' Addresses</a>
+</li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1">
+<a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
+</h1>
+<p id="rfc.section.1.p.1">This document defines a new ALTO services for querying multiple ALTO resources in a single request.</p>
+<h1 id="rfc.section.1.1">
+<a href="#rfc.section.1.1">1.1.</a> <a href="#background" id="background">Background</a>
+</h1>
+<p id="rfc.section.1.1.p.1">We need the multipart query service for three reasons:</p>
+<p></p>
+
+<ul>
+<li>Clients may want to query multiple ALTO resources consistently, which means the server should guarantee the responses of all resources are generated at the same time.</li>
+<li>Some use cases need to query multiple ALTO resources with a joint relationship.</li>
+<li>Some use cases may need the server generates &#8220;anonymous&#8221; ALTO resources for the on-demand information. The &#8220;anonymous&#8221; ALTO resources usually cannot appear alone but need to bind with some &#8220;non-anonymous&#8221; ALTO resources.</li>
+</ul>
+<h1 id="rfc.section.1.2">
+<a href="#rfc.section.1.2">1.2.</a> <a href="#terminologies" id="terminologies">Terminologies</a>
+</h1>
+<p id="rfc.section.1.2.p.1">TBD.</p>
+<h1 id="rfc.section.2">
+<a href="#rfc.section.2">2.</a> <a href="#use-cases" id="use-cases">Use Cases</a>
+</h1>
+<p id="rfc.section.2.p.1">We take the following potential use cases may requiring the multipart query service.</p>
+<h1 id="rfc.section.2.1">
+<a href="#rfc.section.2.1">2.1.</a> <a href="#simple-batch-query" id="simple-batch-query">Simple Batch Query</a>
+</h1>
+<p id="rfc.section.2.1.p.1">The ALTO server provides a network map resource A and a dependent cost map resource B. Both resources may change frequently. If the ALTO client queries the network map first, when it queries the cost map, the network map may change so that the responded cost map is not consistent with the previous network map.</p>
+<h1 id="rfc.section.2.2">
+<a href="#rfc.section.2.2">2.2.</a> <a href="#properties-constrained-query" id="properties-constrained-query">Properties Constrained Query</a>
+</h1>
+<h1 id="rfc.section.2.3">
+<a href="#rfc.section.2.3">2.3.</a> <a href="#path-vector-query" id="path-vector-query">Path Vector Query</a>
+</h1>
+<h1 id="rfc.section.3">
+<a href="#rfc.section.3">3.</a> <a href="#requirements" id="requirements">Requirements</a>
+</h1>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#overview-of-approach" id="overview-of-approach">Overview of Approach</a>
+</h1>
+<p id="rfc.section.4.p.1">Key techniques:</p>
+<p></p>
+
+<ul>
+<li>Multipart message in HTTP/1.1 for compound resources.</li>
+<li>XQuery for general json process and relational joint query</li>
+</ul>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#multipart-query-service" id="multipart-query-service">Multipart Query Service</a>
+</h1>
+<h1 id="rfc.section.5.1">
+<a href="#rfc.section.5.1">5.1.</a> <a href="#media-type" id="media-type">Media Type</a>
+</h1>
+<p><samp>multipart/mixed</samp> or <samp>multipart/related</samp>.</p>
+<h1 id="rfc.section.5.2">
+<a href="#rfc.section.5.2">5.2.</a> <a href="#http-method" id="http-method">HTTP Method</a>
+</h1>
+<p id="rfc.section.5.2.p.1">POST</p>
+<h1 id="rfc.section.5.3">
+<a href="#rfc.section.5.3">5.3.</a> <a href="#mp-query-params" id="mp-query-params">Accept Input Parameters</a>
+</h1>
+<p><samp>application/alto-multipartquery+json</samp>.</p>
+<h1 id="rfc.section.5.4">
+<a href="#rfc.section.5.4">5.4.</a> <a href="#capabilities" id="capabilities">Capabilities</a>
+</h1>
+<h1 id="rfc.section.5.5">
+<a href="#rfc.section.5.5">5.5.</a> <a href="#uses" id="uses">Uses</a>
+</h1>
+<p id="rfc.section.5.5.p.1">Any available ALTO resources rather than the multipart query service resource.</p>
+<h1 id="rfc.section.5.6">
+<a href="#rfc.section.5.6">5.6.</a> <a href="#response" id="response">Response</a>
+</h1>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#examples" id="examples">Examples</a>
+</h1>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#compatibility" id="compatibility">Compatibility</a>
+</h1>
+<h1 id="rfc.section.8">
+<a href="#rfc.section.8">8.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
+</h1>
+<h1 id="rfc.section.9">
+<a href="#rfc.section.9">9.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
+</h1>
+<h1 id="rfc.section.9.1">
+<a href="#rfc.section.9.1">9.1.</a> <a href="#applicationalto-media-types" id="applicationalto-media-types">application/alto-* Media Types</a>
+</h1>
+<p id="rfc.section.9.1.p.1">This document registers an additional ALTO media type, listed in <a href="#tbl-media-types" class="xref">Table 1</a>.</p>
+<div id="rfc.table.1"></div>
+<div id="tbl-media-types"></div>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<caption>Additional ALTO Media Type.</caption>
+<thead><tr>
+<th class="left">Type</th>
+<th class="left">Subtype</th>
+<th class="left">Specification</th>
+</tr></thead>
+<tbody><tr>
+<td class="left">application</td>
+<td class="left">alto-multipartquery+json</td>
+<td class="left"><a href="#mp-query-params" class="xref">Section 5.3</a></td>
+</tr></tbody>
+</table>
+<p></p>
+
+<dl>
+<dt>Type name:</dt>
+<dd style="margin-left: 8">application</dd>
+<dt>Subtype name:</dt>
+<dd style="margin-left: 8">This document registers multiple subtypes, as listed in <a href="#tbl-media-types" class="xref">Table 1</a>.</dd>
+<dt>Required parameters:</dt>
+<dd style="margin-left: 8">n/a</dd>
+<dt>Optional parameters:</dt>
+<dd style="margin-left: 8">n/a</dd>
+<dt>Encoding considerations:</dt>
+<dd style="margin-left: 8">Encoding considerations are identical to those specified for the <samp>application/json</samp> media type. See <a href="#RFC7159" class="xref">[RFC7159]</a>.</dd>
+<dt>Security considerations:</dt>
+<dd style="margin-left: 8">Security considerations related to the generation and consumption of ALTO Protocol messages are discussed in Section 15 of <a href="#RFC7285" class="xref">[RFC7285]</a>.</dd>
+<dt>Interoperability considerations:</dt>
+<dd style="margin-left: 8">This document specifies formats of conforming messages and the interpretation thereof.</dd>
+<dt>Published specification:</dt>
+<dd style="margin-left: 8">This document is the specification for these media types; see <a href="#tbl-media-types" class="xref">Table 1</a> for the section documenting each media type.</dd>
+<dt>Applications that use this media type:</dt>
+<dd style="margin-left: 8">ALTO servers and ALTO clients either stand alone or are embedded within other applications.</dd>
+<dt>Additional information:</dt>
+<dd style="margin-left: 8">
+<dl>
+<dt>Magic number(s):</dt>
+<dd style="margin-left: 8">n/a</dd>
+<dt>File extension(s):</dt>
+<dd style="margin-left: 8">This document uses the mime type to refer to protocol messages and thus does not require a file extension.</dd>
+<dt>Macintosh file type code(s):</dt>
+<dd style="margin-left: 8">n/a</dd>
+</dl>
+<p> </p>
+</dd>
+<dt>Person &amp; email address to contact for further information:</dt>
+<dd style="margin-left: 8">See Authors&#8217; Addresses section.</dd>
+<dt>Intended usage:</dt>
+<dd style="margin-left: 8">COMMON</dd>
+<dt>Restrictions on usage:</dt>
+<dd style="margin-left: 8">n/a</dd>
+<dt>Author:</dt>
+<dd style="margin-left: 8">See Authors&#8217; Addresses section.</dd>
+<dt>Change controller:</dt>
+<dd style="margin-left: 8">Internet Engineering Task Force (mailto:iesg@ietf.org).</dd>
+</dl>
+<h1 id="rfc.section.10">
+<a href="#rfc.section.10">10.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a>
+</h1>
+<h1 id="rfc.references">
+<a href="#rfc.references">11.</a> References</h1>
+<h1 id="rfc.references.1">
+<a href="#rfc.references.1">11.1.</a> Normative References</h1>
+<table><tbody><tr>
+<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
+<td class="top">
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr></tbody></table>
+<h1 id="rfc.references.2">
+<a href="#rfc.references.2">11.2.</a> Informative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="I-D.ietf-alto-path-vector">[I-D.ietf-alto-path-vector]</b></td>
+<td class="top">
+<a>Bernstein, G.</a>, <a>Chen, S.</a>, <a>Gao, K.</a>, <a>Lee, Y.</a>, <a>Roome, W.</a>, <a>Scharf, M.</a>, <a>Yang, Y.</a> and <a>J. Zhang</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-path-vector-03">ALTO Extension: Path Vector Cost Type</a>", Internet-Draft draft-ietf-alto-path-vector-03, March 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="I-D.ietf-alto-unified-props-new">[I-D.ietf-alto-unified-props-new]</b></td>
+<td class="top">
+<a>Roome, W.</a>, <a>Chen, S.</a>, <a>Randriamasy, S.</a>, <a>Yang, Y.</a> and <a>J. Zhang</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-unified-props-new-03">Unified Properties for the ALTO Protocol</a>", Internet-Draft draft-ietf-alto-unified-props-new-03, March 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2387">[RFC2387]</b></td>
+<td class="top">
+<a>Levinson, E.</a>, "<a href="https://tools.ietf.org/html/rfc2387">The MIME Multipart/Related Content-type</a>", RFC 2387, DOI 10.17487/RFC2387, August 1998.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7159">[RFC7159]</b></td>
+<td class="top">
+<a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7285">[RFC7285]</b></td>
+<td class="top">
+<a>Alimi, R.</a>, <a>Penno, R.</a>, <a>Yang, Y.</a>, <a>Kiesel, S.</a>, <a>Previdi, S.</a>, <a>Roome, W.</a>, <a>Shalunov, S.</a> and <a>R. Woundy</a>, "<a href="https://tools.ietf.org/html/rfc7285">Application-Layer Traffic Optimization (ALTO) Protocol</a>", RFC 7285, DOI 10.17487/RFC7285, September 2014.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Shiwei Dawn Chen</span> 
+	  <span class="n hidden">
+		<span class="family-name">Chen</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Tongji University</span>
+	<span class="adr">
+	  <span class="vcardline">4800 Cao'An Hwy</span>
+
+	  <span class="vcardline">
+		<span class="locality">Shanghai</span>,  
+		<span class="region"></span>
+		<span class="code">201804</span>
+	  </span>
+	  <span class="country-name vcardline">China</span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:dawn_chen_f@hotmail.com">dawn_chen_f@hotmail.com</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Jingxuan Jensen Zhang</span> 
+	  <span class="n hidden">
+		<span class="family-name">Zhang</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Tongji University</span>
+	<span class="adr">
+	  <span class="vcardline">4800 Cao'An Hwy</span>
+
+	  <span class="vcardline">
+		<span class="locality">Shanghai</span>,  
+		<span class="region"></span>
+		<span class="code">201804</span>
+	  </span>
+	  <span class="country-name vcardline">China</span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:jingxuan.zhang@tongji.edu.cn">jingxuan.zhang@tongji.edu.cn</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>

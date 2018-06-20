@@ -1,0 +1,336 @@
+
+
+
+
+ALTO                                                             S. Chen
+Internet-Draft                                                  J. Zhang
+Intended status: Experimental                          Tongji University
+Expires: December 23, 2018                                 June 21, 2018
+
+
+         Multiple ALTO Resources Query Using Multipart Message
+                    draft-tbd-alto-multipart-latest
+
+Abstract
+
+   An extension to support the multiple ALTO resources query.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on December 23, 2018.
+
+Copyright Notice
+
+   Copyright (c) 2018 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 1]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Background  . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.2.  Terminologies . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Use Cases . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  Simple Batch Query  . . . . . . . . . . . . . . . . . . .   3
+     2.2.  Properties Constrained Query  . . . . . . . . . . . . . .   3
+     2.3.  Path Vector Query . . . . . . . . . . . . . . . . . . . .   3
+   3.  Requirements  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Overview of Approach  . . . . . . . . . . . . . . . . . . . .   3
+   5.  Multipart Query Service . . . . . . . . . . . . . . . . . . .   3
+     5.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . .   3
+     5.2.  HTTP Method . . . . . . . . . . . . . . . . . . . . . . .   3
+     5.3.  Accept Input Parameters . . . . . . . . . . . . . . . . .   4
+     5.4.  Capabilities  . . . . . . . . . . . . . . . . . . . . . .   4
+     5.5.  Uses  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     5.6.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+   7.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .   4
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+     9.1.  application/alto-* Media Types  . . . . . . . . . . . . .   4
+   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .   5
+     11.2.  Informative References . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+
+1.  Introduction
+
+   This document defines a new ALTO services for querying multiple ALTO
+   resources in a single request.
+
+1.1.  Background
+
+   We need the multipart query service for three reasons:
+
+   o  Clients may want to query multiple ALTO resources consistently,
+      which means the server should guarantee the responses of all
+      resources are generated at the same time.
+
+   o  Some use cases need to query multiple ALTO resources with a joint
+      relationship.
+
+   o  Some use cases may need the server generates "anonymous" ALTO
+      resources for the on-demand information.  The "anonymous" ALTO
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 2]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+      resources usually cannot appear alone but need to bind with some
+      "non-anonymous" ALTO resources.
+
+1.2.  Terminologies
+
+   TBD.
+
+2.  Use Cases
+
+   We take the following potential use cases may requiring the multipart
+   query service.
+
+2.1.  Simple Batch Query
+
+   The ALTO server provides a network map resource A and a dependent
+   cost map resource B.  Both resources may change frequently.  If the
+   ALTO client queries the network map first, when it queries the cost
+   map, the network map may change so that the responded cost map is not
+   consistent with the previous network map.
+
+2.2.  Properties Constrained Query
+
+2.3.  Path Vector Query
+
+3.  Requirements
+
+4.  Overview of Approach
+
+   Key techniques:
+
+   o  Multipart message in HTTP/1.1 for compound resources.
+
+   o  XQuery for general json process and relational joint query
+
+5.  Multipart Query Service
+
+5.1.  Media Type
+
+   "multipart/mixed" or "multipart/related".
+
+5.2.  HTTP Method
+
+   POST
+
+
+
+
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 3]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+5.3.  Accept Input Parameters
+
+   "application/alto-multipartquery+json".
+
+5.4.  Capabilities
+
+5.5.  Uses
+
+   Any available ALTO resources rather than the multipart query service
+   resource.
+
+5.6.  Response
+
+6.  Examples
+
+7.  Compatibility
+
+8.  Security Considerations
+
+9.  IANA Considerations
+
+9.1.  application/alto-* Media Types
+
+   This document registers an additional ALTO media type, listed in
+   Table 1.
+
+        +-------------+--------------------------+---------------+
+        | Type        | Subtype                  | Specification |
+        +-------------+--------------------------+---------------+
+        | application | alto-multipartquery+json | Section 5.3   |
+        +-------------+--------------------------+---------------+
+
+                   Table 1: Additional ALTO Media Type.
+
+   Type name:  application
+
+   Subtype name:  This document registers multiple subtypes, as listed
+      in Table 1.
+
+   Required parameters:  n/a
+
+   Optional parameters:  n/a
+
+   Encoding considerations:  Encoding considerations are identical to
+      those specified for the "application/json" media type.  See
+      [RFC7159].
+
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 4]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+   Security considerations:  Security considerations related to the
+      generation and consumption of ALTO Protocol messages are discussed
+      in Section 15 of [RFC7285].
+
+   Interoperability considerations:  This document specifies formats of
+      conforming messages and the interpretation thereof.
+
+   Published specification:  This document is the specification for
+      these media types; see Table 1 for the section documenting each
+      media type.
+
+   Applications that use this media type:  ALTO servers and ALTO clients
+      either stand alone or are embedded within other applications.
+
+   Additional information:
+
+      Magic number(s):  n/a
+
+      File extension(s):  This document uses the mime type to refer to
+         protocol messages and thus does not require a file extension.
+
+      Macintosh file type code(s):  n/a
+
+   Person & email address to contact for further information:  See
+      Authors' Addresses section.
+
+   Intended usage:  COMMON
+
+   Restrictions on usage:  n/a
+
+   Author:  See Authors' Addresses section.
+
+   Change controller:  Internet Engineering Task Force
+      (mailto:iesg@ietf.org).
+
+10.  Acknowledgements
+
+11.  References
+
+11.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 5]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+11.2.  Informative References
+
+   [I-D.ietf-alto-path-vector]
+              Bernstein, G., Chen, S., Gao, K., Lee, Y., Roome, W.,
+              Scharf, M., Yang, Y., and J. Zhang, "ALTO Extension: Path
+              Vector Cost Type", draft-ietf-alto-path-vector-03 (work in
+              progress), March 2018.
+
+   [I-D.ietf-alto-unified-props-new]
+              Roome, W., Chen, S., Randriamasy, S., Yang, Y., and J.
+              Zhang, "Unified Properties for the ALTO Protocol", draft-
+              ietf-alto-unified-props-new-03 (work in progress), March
+              2018.
+
+   [RFC2387]  Levinson, E., "The MIME Multipart/Related Content-type",
+              RFC 2387, DOI 10.17487/RFC2387, August 1998,
+              <https://www.rfc-editor.org/info/rfc2387>.
+
+   [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
+              2014, <https://www.rfc-editor.org/info/rfc7159>.
+
+   [RFC7285]  Alimi, R., Ed., Penno, R., Ed., Yang, Y., Ed., Kiesel, S.,
+              Previdi, S., Roome, W., Shalunov, S., and R. Woundy,
+              "Application-Layer Traffic Optimization (ALTO) Protocol",
+              RFC 7285, DOI 10.17487/RFC7285, September 2014,
+              <https://www.rfc-editor.org/info/rfc7285>.
+
+Authors' Addresses
+
+   Shiwei Dawn Chen
+   Tongji University
+   4800 Cao'An Hwy
+   Shanghai  201804
+   China
+
+   Email: dawn_chen_f@hotmail.com
+
+
+   Jingxuan Jensen Zhang
+   Tongji University
+   4800 Cao'An Hwy
+   Shanghai  201804
+   China
+
+   Email: jingxuan.zhang@tongji.edu.cn
+
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 6]
