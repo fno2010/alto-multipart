@@ -51,6 +51,24 @@ informative:
   RFC7285:
   I-D.ietf-alto-path-vector:
   I-D.ietf-alto-unified-props-new:
+  W3CXQUERY:
+    title: "XQuery 3.0: An XML query language"
+    author:
+      -
+        ins: J. Robie
+        name: Jonathan Robie
+      -
+        ins: D. Chamberlin
+        name: Don Chamberlin
+      -
+        ins: M. Dyck
+        name: Michael Dyck
+      -
+        ins: J. Snelson
+        name: John Snelson
+    date: 2014
+    seriesinfo:
+      W3C: Recommendation, W3C
 
 --- abstract
 
@@ -86,29 +104,55 @@ service.
 
 ## Simple Batch Query
 
-The ALTO server provides a network map resource A and a dependent cost map
-resource B. Both resources may change frequently. If the ALTO client queries the
-network map first, when it queries the cost map, the network map may change so
-that the responded cost map is not consistent with the previous network map.
+The simplest use case is to query a batch of ALTO resources in a single request.
+
+For example, the ALTO server provides a network map resource A and a dependent
+cost map resource B. Both resources may change frequently. Assume the ALTO
+client queries the network map first, and it gets the revision A1. When the
+client queries the cost map, the network map may be already changed from A1 to
+A2, and the client receives cost map B2 which depends on A2 not A1. So the
+responded cost map B2 is not consistent with the previous network map A1.
+
+This case requires the ALTO server to provide a way for the ALTO client to query
+multiple ALTO resources in a single transaction.
 
 ## Properties Constrained Query
 
+Some clients may need to query an endpoint property map first, and find
+endpoints with some properties fitting some conditions. And then they query the
+endpoint cost of these endpoints.
+
 ## Path Vector Query
 
+{{I-D.ietf-alto-path-vector}} introduce an extension of ALTO to provide path
+vector information by cost map and unified property map
+{{I-D.ietf-alto-unified-props-new}}. The client using path vector extension
+will usually query cost map and a generated dependent property map.
+
 # Requirements
+
+MPQ-Req1:
+: Query multiple ALTO resources in a single request, and return the result in a
+  single response.
+
+MPQ-Req2:
+: Provide general filter schema for any ALTO resources.
+
+MPQ-Req3:
+: Support joint query in some relationship.
 
 # Overview of Approach
 
 Key techniques:
 
-- Multipart message in HTTP/1.1 for compound resources.
-- XQuery for general json process and relational joint query
+- Multipart message {{?RFC2046}} for compound resources.
+- XQuery {{W3CXQUERY}} for general query process and relational joint query
 
 # Multipart Query Service
 
 ## Media Type
 
-`multipart/mixed` or `multipart/related`.
+`multipart/mixed` {{RFC2046}} or `multipart/related` {{?RFC2387}}.
 
 ## HTTP Method
 
@@ -129,6 +173,12 @@ Any available ALTO resources rather than the multipart query service resource.
 # Examples
 
 # Compatibility
+
+# Misc Considerations
+
+## Support Incremental Update
+
+## Anonymous Resources
 
 # Security Considerations
 

@@ -1,10 +1,12 @@
-# 
+# ALTO Multipart Query Service
 
-This is the working area for the individual Internet-Draft, "".
+![Travis branch](https://img.shields.io/travis/openalto/alto-multipart/master.svg)
 
-* [Editor's Copy](https://fno2010.github.io/alto-multipart/#go.draft-tbd-alto-multipart.html)
-* [Individual Draft](https://tools.ietf.org/html/draft-tbd-alto-multipart)
-* [Compare Editor's Copy to Individual Draft](https://fno2010.github.io/alto-multipart/#go.draft-tbd-alto-multipart.diff)
+This is the working area for the individual Internet-Draft, "draft-tbd-alto-multipart".
+
+* [Working Version](https://openalto.github.io/alto-multipart/#go.draft-tbd-alto-multipart.html)
+* [Latest Release](https://tools.ietf.org/html/draft-tbd-alto-multipart)
+* [Compare Working Version to Latest Release](https://openalto.github.io/alto-multipart/#go.draft-tbd-alto-multipart.diff)
 
 ## Building the Draft
 
@@ -21,4 +23,4 @@ This requires that you have the necessary software installed.  See
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/fno2010/alto-multipart/blob/master/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/openalto/alto-multipart/blob/master/CONTRIBUTING.md).
