@@ -67,25 +67,28 @@ Table of Contents
      2.1.  Simple Batch Query  . . . . . . . . . . . . . . . . . . .   3
      2.2.  Properties Constrained Query  . . . . . . . . . . . . . .   3
      2.3.  Path Vector Query . . . . . . . . . . . . . . . . . . . .   3
-   3.  Requirements  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  Overview of Approach  . . . . . . . . . . . . . . . . . . . .   3
-   5.  Multipart Query Service . . . . . . . . . . . . . . . . . . .   3
-     5.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . .   3
-     5.2.  HTTP Method . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Requirements  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   4.  Overview of Approach  . . . . . . . . . . . . . . . . . . . .   4
+   5.  Multipart Query Service . . . . . . . . . . . . . . . . . . .   4
+     5.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . .   4
+     5.2.  HTTP Method . . . . . . . . . . . . . . . . . . . . . . .   4
      5.3.  Accept Input Parameters . . . . . . . . . . . . . . . . .   4
      5.4.  Capabilities  . . . . . . . . . . . . . . . . . . . . . .   4
      5.5.  Uses  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
      5.6.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   4
    6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
    7.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .   4
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-     9.1.  application/alto-* Media Types  . . . . . . . . . . . . .   4
-   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .   5
-     11.2.  Informative References . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   8.  Misc Considerations . . . . . . . . . . . . . . . . . . . . .   5
+     8.1.  Support Incremental Update  . . . . . . . . . . . . . . .   5
+     8.2.  Anonymous Resources . . . . . . . . . . . . . . . . . . .   5
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+     10.1.  application/alto-* Media Types . . . . . . . . . . . . .   5
+   11. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
+   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     12.1.  Normative References . . . . . . . . . . . . . . . . . .   6
+     12.2.  Informative References . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -103,9 +106,6 @@ Table of Contents
    o  Some use cases need to query multiple ALTO resources with a joint
       relationship.
 
-   o  Some use cases may need the server generates "anonymous" ALTO
-      resources for the on-demand information.  The "anonymous" ALTO
-
 
 
 
@@ -114,6 +114,8 @@ Chen & Zhang            Expires December 23, 2018               [Page 2]
 Internet-Draft                  Multipart                      June 2018
 
 
+   o  Some use cases may need the server generates "anonymous" ALTO
+      resources for the on-demand information.  The "anonymous" ALTO
       resources usually cannot appear alone but need to bind with some
       "non-anonymous" ALTO resources.
 
@@ -128,35 +130,33 @@ Internet-Draft                  Multipart                      June 2018
 
 2.1.  Simple Batch Query
 
-   The ALTO server provides a network map resource A and a dependent
-   cost map resource B.  Both resources may change frequently.  If the
-   ALTO client queries the network map first, when it queries the cost
-   map, the network map may change so that the responded cost map is not
-   consistent with the previous network map.
+   The simplest use case is to query a batch of ALTO resources in a
+   single request.
+
+   For example, the ALTO server provides a network map resource A and a
+   dependent cost map resource B.  Both resources may change frequently.
+   Assume the ALTO client queries the network map first, and it gets the
+   revision A1.  When the client queries the cost map, the network map
+   may be already changed from A1 to A2, and the client receives cost
+   map B2 which depends on A2 not A1.  So the responded cost map B2 is
+   not consistent with the previous network map A1.
+
+   This case requires the ALTO server to provide a way for the ALTO
+   client to query multiple ALTO resources in a single transaction.
 
 2.2.  Properties Constrained Query
 
+   Some clients may need to query an endpoint property map first, and
+   find endpoints with some properties fitting some conditions.  And
+   then they query the endpoint cost of these endpoints.
+
 2.3.  Path Vector Query
 
-3.  Requirements
-
-4.  Overview of Approach
-
-   Key techniques:
-
-   o  Multipart message in HTTP/1.1 for compound resources.
-
-   o  XQuery for general json process and relational joint query
-
-5.  Multipart Query Service
-
-5.1.  Media Type
-
-   "multipart/mixed" or "multipart/related".
-
-5.2.  HTTP Method
-
-   POST
+   [I-D.ietf-alto-path-vector] introduce an extension of ALTO to provide
+   path vector information by cost map and unified property map
+   [I-D.ietf-alto-unified-props-new].  The client using path vector
+   extension will usually query cost map and a generated dependent
+   property map.
 
 
 
@@ -169,6 +169,34 @@ Chen & Zhang            Expires December 23, 2018               [Page 3]
 
 Internet-Draft                  Multipart                      June 2018
 
+
+3.  Requirements
+
+   MPQ-Req1:  Query multiple ALTO resources in a single request, and
+      return the result in a single response.
+
+   MPQ-Req2:  Provide general filter schema for any ALTO resources.
+
+   MPQ-Req3:  Support joint query in some relationship.
+
+4.  Overview of Approach
+
+   Key techniques:
+
+   o  Multipart message [RFC2046] for compound resources.
+
+   o  XQuery [W3CXQUERY] for general query process and relational joint
+      query
+
+5.  Multipart Query Service
+
+5.1.  Media Type
+
+   "multipart/mixed" [RFC2046] or "multipart/related" [RFC2387].
+
+5.2.  HTTP Method
+
+   POST
 
 5.3.  Accept Input Parameters
 
@@ -187,11 +215,28 @@ Internet-Draft                  Multipart                      June 2018
 
 7.  Compatibility
 
-8.  Security Considerations
 
-9.  IANA Considerations
 
-9.1.  application/alto-* Media Types
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 4]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+8.  Misc Considerations
+
+8.1.  Support Incremental Update
+
+8.2.  Anonymous Resources
+
+9.  Security Considerations
+
+10.  IANA Considerations
+
+10.1.  application/alto-* Media Types
 
    This document registers an additional ALTO media type, listed in
    Table 1.
@@ -217,15 +262,6 @@ Internet-Draft                  Multipart                      June 2018
       those specified for the "application/json" media type.  See
       [RFC7159].
 
-
-
-
-
-Chen & Zhang            Expires December 23, 2018               [Page 4]
-
-Internet-Draft                  Multipart                      June 2018
-
-
    Security considerations:  Security considerations related to the
       generation and consumption of ALTO Protocol messages are discussed
       in Section 15 of [RFC7285].
@@ -236,6 +272,15 @@ Internet-Draft                  Multipart                      June 2018
    Published specification:  This document is the specification for
       these media types; see Table 1 for the section documenting each
       media type.
+
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 5]
+
+Internet-Draft                  Multipart                      June 2018
+
 
    Applications that use this media type:  ALTO servers and ALTO clients
       either stand alone or are embedded within other applications.
@@ -261,28 +306,18 @@ Internet-Draft                  Multipart                      June 2018
    Change controller:  Internet Engineering Task Force
       (mailto:iesg@ietf.org).
 
-10.  Acknowledgements
+11.  Acknowledgements
 
-11.  References
+12.  References
 
-11.1.  Normative References
+12.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-
-
-Chen & Zhang            Expires December 23, 2018               [Page 5]
-
-Internet-Draft                  Multipart                      June 2018
-
-
-11.2.  Informative References
+12.2.  Informative References
 
    [I-D.ietf-alto-path-vector]
               Bernstein, G., Chen, S., Gao, K., Lee, Y., Roome, W.,
@@ -295,6 +330,18 @@ Internet-Draft                  Multipart                      June 2018
               Zhang, "Unified Properties for the ALTO Protocol", draft-
               ietf-alto-unified-props-new-03 (work in progress), March
               2018.
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 6]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+   [RFC2046]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+              Extensions (MIME) Part Two: Media Types", RFC 2046,
+              DOI 10.17487/RFC2046, November 1996,
+              <https://www.rfc-editor.org/info/rfc2046>.
 
    [RFC2387]  Levinson, E., "The MIME Multipart/Related Content-type",
               RFC 2387, DOI 10.17487/RFC2387, August 1998,
@@ -309,6 +356,11 @@ Internet-Draft                  Multipart                      June 2018
               "Application-Layer Traffic Optimization (ALTO) Protocol",
               RFC 7285, DOI 10.17487/RFC7285, September 2014,
               <https://www.rfc-editor.org/info/rfc7285>.
+
+   [W3CXQUERY]
+              Robie, J., Chamberlin, D., Dyck, M., and J. Snelson,
+              "XQuery 3.0: An XML query language", W3C Recommendation,
+              W3C, 2014.
 
 Authors' Addresses
 
@@ -333,4 +385,8 @@ Authors' Addresses
 
 
 
-Chen & Zhang            Expires December 23, 2018               [Page 6]
+
+
+
+
+Chen & Zhang            Expires December 23, 2018               [Page 7]

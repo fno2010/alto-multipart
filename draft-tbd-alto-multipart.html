@@ -294,13 +294,16 @@ ul.toc li {
 <link href="#rfc.section.5.6" rel="Chapter" title="5.6 Response">
 <link href="#rfc.section.6" rel="Chapter" title="6 Examples">
 <link href="#rfc.section.7" rel="Chapter" title="7 Compatibility">
-<link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations">
-<link href="#rfc.section.9" rel="Chapter" title="9 IANA Considerations">
-<link href="#rfc.section.9.1" rel="Chapter" title="9.1 application/alto-* Media Types">
-<link href="#rfc.section.10" rel="Chapter" title="10 Acknowledgements">
-<link href="#rfc.references" rel="Chapter" title="11 References">
-<link href="#rfc.references.1" rel="Chapter" title="11.1 Normative References">
-<link href="#rfc.references.2" rel="Chapter" title="11.2 Informative References">
+<link href="#rfc.section.8" rel="Chapter" title="8 Misc Considerations">
+<link href="#rfc.section.8.1" rel="Chapter" title="8.1 Support Incremental Update">
+<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Anonymous Resources">
+<link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations">
+<link href="#rfc.section.10" rel="Chapter" title="10 IANA Considerations">
+<link href="#rfc.section.10.1" rel="Chapter" title="10.1 application/alto-* Media Types">
+<link href="#rfc.section.11" rel="Chapter" title="11 Acknowledgements">
+<link href="#rfc.references" rel="Chapter" title="12 References">
+<link href="#rfc.references.1" rel="Chapter" title="12.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="12.2 Informative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -396,19 +399,25 @@ ul.toc li {
 </li>
 <li>7.   <a href="#rfc.section.7">Compatibility</a>
 </li>
-<li>8.   <a href="#rfc.section.8">Security Considerations</a>
+<li>8.   <a href="#rfc.section.8">Misc Considerations</a>
 </li>
-<li>9.   <a href="#rfc.section.9">IANA Considerations</a>
+<ul><li>8.1.   <a href="#rfc.section.8.1">Support Incremental Update</a>
 </li>
-<ul><li>9.1.   <a href="#rfc.section.9.1">application/alto-* Media Types</a>
+<li>8.2.   <a href="#rfc.section.8.2">Anonymous Resources</a>
 </li>
-</ul><li>10.   <a href="#rfc.section.10">Acknowledgements</a>
+</ul><li>9.   <a href="#rfc.section.9">Security Considerations</a>
 </li>
-<li>11.   <a href="#rfc.references">References</a>
+<li>10.   <a href="#rfc.section.10">IANA Considerations</a>
 </li>
-<ul><li>11.1.   <a href="#rfc.references.1">Normative References</a>
+<ul><li>10.1.   <a href="#rfc.section.10.1">application/alto-* Media Types</a>
 </li>
-<li>11.2.   <a href="#rfc.references.2">Informative References</a>
+</ul><li>11.   <a href="#rfc.section.11">Acknowledgements</a>
+</li>
+<li>12.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>12.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>12.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
 </ul><li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -442,16 +451,30 @@ ul.toc li {
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#simple-batch-query" id="simple-batch-query">Simple Batch Query</a>
 </h1>
-<p id="rfc.section.2.1.p.1">The ALTO server provides a network map resource A and a dependent cost map resource B. Both resources may change frequently. If the ALTO client queries the network map first, when it queries the cost map, the network map may change so that the responded cost map is not consistent with the previous network map.</p>
+<p id="rfc.section.2.1.p.1">The simplest use case is to query a batch of ALTO resources in a single request.</p>
+<p id="rfc.section.2.1.p.2">For example, the ALTO server provides a network map resource A and a dependent cost map resource B. Both resources may change frequently. Assume the ALTO client queries the network map first, and it gets the revision A1. When the client queries the cost map, the network map may be already changed from A1 to A2, and the client receives cost map B2 which depends on A2 not A1. So the responded cost map B2 is not consistent with the previous network map A1.</p>
+<p id="rfc.section.2.1.p.3">This case requires the ALTO server to provide a way for the ALTO client to query multiple ALTO resources in a single transaction.</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#properties-constrained-query" id="properties-constrained-query">Properties Constrained Query</a>
 </h1>
+<p id="rfc.section.2.2.p.1">Some clients may need to query an endpoint property map first, and find endpoints with some properties fitting some conditions. And then they query the endpoint cost of these endpoints.</p>
 <h1 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#path-vector-query" id="path-vector-query">Path Vector Query</a>
 </h1>
+<p><a href="#I-D.ietf-alto-path-vector" class="xref">[I-D.ietf-alto-path-vector]</a> introduce an extension of ALTO to provide path vector information by cost map and unified property map <a href="#I-D.ietf-alto-unified-props-new" class="xref">[I-D.ietf-alto-unified-props-new]</a>. The client using path vector extension will usually query cost map and a generated dependent property map.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#requirements" id="requirements">Requirements</a>
 </h1>
+<p></p>
+
+<dl>
+<dt>MPQ-Req1:</dt>
+<dd style="margin-left: 8">Query multiple ALTO resources in a single request, and return the result in a single response.</dd>
+<dt>MPQ-Req2:</dt>
+<dd style="margin-left: 8">Provide general filter schema for any ALTO resources.</dd>
+<dt>MPQ-Req3:</dt>
+<dd style="margin-left: 8">Support joint query in some relationship.</dd>
+</dl>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#overview-of-approach" id="overview-of-approach">Overview of Approach</a>
 </h1>
@@ -459,8 +482,8 @@ ul.toc li {
 <p></p>
 
 <ul>
-<li>Multipart message in HTTP/1.1 for compound resources.</li>
-<li>XQuery for general json process and relational joint query</li>
+<li>Multipart message <a href="#RFC2046" class="xref">[RFC2046]</a> for compound resources.</li>
+<li>XQuery <a href="#W3CXQUERY" class="xref">[W3CXQUERY]</a> for general query process and relational joint query</li>
 </ul>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#multipart-query-service" id="multipart-query-service">Multipart Query Service</a>
@@ -468,7 +491,7 @@ ul.toc li {
 <h1 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#media-type" id="media-type">Media Type</a>
 </h1>
-<p><samp>multipart/mixed</samp> or <samp>multipart/related</samp>.</p>
+<p><samp>multipart/mixed</samp> <a href="#RFC2046" class="xref">[RFC2046]</a> or <samp>multipart/related</samp> <a href="#RFC2387" class="xref">[RFC2387]</a>.</p>
 <h1 id="rfc.section.5.2">
 <a href="#rfc.section.5.2">5.2.</a> <a href="#http-method" id="http-method">HTTP Method</a>
 </h1>
@@ -494,15 +517,24 @@ ul.toc li {
 <a href="#rfc.section.7">7.</a> <a href="#compatibility" id="compatibility">Compatibility</a>
 </h1>
 <h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
+<a href="#rfc.section.8">8.</a> <a href="#misc-considerations" id="misc-considerations">Misc Considerations</a>
+</h1>
+<h1 id="rfc.section.8.1">
+<a href="#rfc.section.8.1">8.1.</a> <a href="#support-incremental-update" id="support-incremental-update">Support Incremental Update</a>
+</h1>
+<h1 id="rfc.section.8.2">
+<a href="#rfc.section.8.2">8.2.</a> <a href="#anonymous-resources" id="anonymous-resources">Anonymous Resources</a>
 </h1>
 <h1 id="rfc.section.9">
-<a href="#rfc.section.9">9.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
+<a href="#rfc.section.9">9.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<h1 id="rfc.section.9.1">
-<a href="#rfc.section.9.1">9.1.</a> <a href="#applicationalto-media-types" id="applicationalto-media-types">application/alto-* Media Types</a>
+<h1 id="rfc.section.10">
+<a href="#rfc.section.10">10.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
-<p id="rfc.section.9.1.p.1">This document registers an additional ALTO media type, listed in <a href="#tbl-media-types" class="xref">Table 1</a>.</p>
+<h1 id="rfc.section.10.1">
+<a href="#rfc.section.10.1">10.1.</a> <a href="#applicationalto-media-types" id="applicationalto-media-types">application/alto-* Media Types</a>
+</h1>
+<p id="rfc.section.10.1.p.1">This document registers an additional ALTO media type, listed in <a href="#tbl-media-types" class="xref">Table 1</a>.</p>
 <div id="rfc.table.1"></div>
 <div id="tbl-media-types"></div>
 <table cellpadding="3" cellspacing="0" class="tt full center">
@@ -562,20 +594,20 @@ ul.toc li {
 <dt>Change controller:</dt>
 <dd style="margin-left: 8">Internet Engineering Task Force (mailto:iesg@ietf.org).</dd>
 </dl>
-<h1 id="rfc.section.10">
-<a href="#rfc.section.10">10.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a>
+<h1 id="rfc.section.11">
+<a href="#rfc.section.11">11.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a>
 </h1>
 <h1 id="rfc.references">
-<a href="#rfc.references">11.</a> References</h1>
+<a href="#rfc.references">12.</a> References</h1>
 <h1 id="rfc.references.1">
-<a href="#rfc.references.1">11.1.</a> Normative References</h1>
+<a href="#rfc.references.1">12.1.</a> Normative References</h1>
 <table><tbody><tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
 <a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
 </tr></tbody></table>
 <h1 id="rfc.references.2">
-<a href="#rfc.references.2">11.2.</a> Informative References</h1>
+<a href="#rfc.references.2">12.2.</a> Informative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="I-D.ietf-alto-path-vector">[I-D.ietf-alto-path-vector]</b></td>
@@ -586,6 +618,11 @@ ul.toc li {
 <td class="reference"><b id="I-D.ietf-alto-unified-props-new">[I-D.ietf-alto-unified-props-new]</b></td>
 <td class="top">
 <a>Roome, W.</a>, <a>Chen, S.</a>, <a>Randriamasy, S.</a>, <a>Yang, Y.</a> and <a>J. Zhang</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-unified-props-new-03">Unified Properties for the ALTO Protocol</a>", Internet-Draft draft-ietf-alto-unified-props-new-03, March 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2046">[RFC2046]</b></td>
+<td class="top">
+<a>Freed, N.</a> and <a>N. Borenstein</a>, "<a href="https://tools.ietf.org/html/rfc2046">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>", RFC 2046, DOI 10.17487/RFC2046, November 1996.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2387">[RFC2387]</b></td>
@@ -601,6 +638,11 @@ ul.toc li {
 <td class="reference"><b id="RFC7285">[RFC7285]</b></td>
 <td class="top">
 <a>Alimi, R.</a>, <a>Penno, R.</a>, <a>Yang, Y.</a>, <a>Kiesel, S.</a>, <a>Previdi, S.</a>, <a>Roome, W.</a>, <a>Shalunov, S.</a> and <a>R. Woundy</a>, "<a href="https://tools.ietf.org/html/rfc7285">Application-Layer Traffic Optimization (ALTO) Protocol</a>", RFC 7285, DOI 10.17487/RFC7285, September 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="W3CXQUERY">[W3CXQUERY]</b></td>
+<td class="top">
+<a>Robie, J.</a>, <a>Chamberlin, D.</a>, <a>Dyck, M.</a> and <a>J. Snelson</a>, "<a>XQuery 3.0: An XML query language</a>", W3C Recommendation, W3C, 2014.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
