@@ -5,7 +5,7 @@
 ALTO WG                                                          S. Chen
 Internet-Draft                                                  J. Zhang
 Intended status: Experimental                          Tongji University
-Expires: December 24, 2018                                 June 22, 2018
+Expires: December 29, 2018                                 June 27, 2018
 
 
          Multiple ALTO Resources Query Using Multipart Message
@@ -30,7 +30,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 24, 2018.
+   This Internet-Draft will expire on December 29, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Chen & Zhang            Expires December 24, 2018               [Page 1]
+Chen & Zhang            Expires December 29, 2018               [Page 1]
 
 Internet-Draft                  Multipart                      June 2018
 
@@ -77,24 +77,24 @@ Table of Contents
      5.5.  Uses  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
      5.6.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   5
    6.  Protocol Errors . . . . . . . . . . . . . . . . . . . . . . .   5
-   7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     7.1.  IRD Example . . . . . . . . . . . . . . . . . . . . . . .   5
+   7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     7.1.  IRD Example . . . . . . . . . . . . . . . . . . . . . . .   6
      7.2.  Example 1: Simple Batch Query . . . . . . . . . . . . . .   7
-     7.3.  Example 2: Properties Constrained Query . . . . . . . . .   7
-     7.4.  Example 3: Path Vector Query  . . . . . . . . . . . . . .   7
-   8.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .   7
-   9.  Misc Considerations . . . . . . . . . . . . . . . . . . . . .   8
-     9.1.  Support Incremental Update  . . . . . . . . . . . . . . .   8
-     9.2.  Anonymous Resources . . . . . . . . . . . . . . . . . . .   8
-   10. Security Considerations . . . . . . . . . . . . . . . . . . .   8
-   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-     11.1.  application/alto-* Media Types . . . . . . . . . . . . .   8
-   12. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
-   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     13.1.  Normative References . . . . . . . . . . . . . . . . . .   9
-     13.2.  Informative References . . . . . . . . . . . . . . . . .   9
-   Appendix A.  Figures  . . . . . . . . . . . . . . . . . . . . . .  10
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
+     7.3.  Example 2: Properties Constrained Query . . . . . . . . .   9
+     7.4.  Example 3: Path Vector Query  . . . . . . . . . . . . . .  12
+   8.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .  13
+   9.  Misc Considerations . . . . . . . . . . . . . . . . . . . . .  14
+     9.1.  Support Incremental Update  . . . . . . . . . . . . . . .  14
+     9.2.  Anonymous Resources . . . . . . . . . . . . . . . . . . .  14
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  14
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
+     11.1.  application/alto-* Media Types . . . . . . . . . . . . .  14
+   12. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  15
+   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     13.1.  Normative References . . . . . . . . . . . . . . . . . .  15
+     13.2.  Informative References . . . . . . . . . . . . . . . . .  15
+   Appendix A.  Figures  . . . . . . . . . . . . . . . . . . . . . .  16
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Chen & Zhang            Expires December 24, 2018               [Page 2]
+Chen & Zhang            Expires December 29, 2018               [Page 2]
 
 Internet-Draft                  Multipart                      June 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                  Multipart                      June 2018
 
 
 
-Chen & Zhang            Expires December 24, 2018               [Page 3]
+Chen & Zhang            Expires December 29, 2018               [Page 3]
 
 Internet-Draft                  Multipart                      June 2018
 
@@ -188,14 +188,14 @@ Internet-Draft                  Multipart                      June 2018
 
    o  Multipart message [RFC2046] for compound resources.
 
-   o  XQuery [W3CXQUERY] for general query process and relational joint
-      query
+   o  JSON Query Language like XQuery [W3CXQUERY] and JSONiq [JSONIQ]
+      for general query process and relational joint query.
 
 5.  Multipart Query Resource
 
 5.1.  Media Type
 
-   "multipart/mixed" [RFC2046] or "multipart/related" [RFC2387].
+   "multipart/related" [RFC2387].
 
 5.2.  HTTP Method
 
@@ -204,27 +204,55 @@ Internet-Draft                  Multipart                      June 2018
 
 5.3.  Accept Input Parameters
 
-   "application/alto-multipartquery+json".
+   The input parameters for a Multipart Query request are supplied in
+   the entity body of the POST request.  This document specifies the
+   input parameters with a data format indicated by the media type
+   "application/alto-multipartquery+alto", which is a JSON object of
+   type ReqMultipartQuery:
 
-       object {
-         JsonString      resource-id;
-         [JsonObject     input;]
-       } ResourceQuery;
+
+
+
+
+
+
+
+
+
+
+
+Chen & Zhang            Expires December 29, 2018               [Page 4]
+
+Internet-Draft                  Multipart                      June 2018
+
 
        object {
          ResourceQuery   resources<1..*>;
          [JsonString     query-lang;]
        } ReqMultipartQuery;
 
+       object {
+         JsonString      resource-id;
+         [JsonValue      input;]
+       } ResourceQuery;
 
+   with fields:
 
+   resources:  List of ResourceQuery objects for which resources are to
+      be queried and how to query them.  Each ResourceQuery object MUST
+      include the "resource-id" field to indicate which resource is to
+      be queried.  If the queried resource requires the POST method, the
+      "input" field MUST be specified.  The value of the "input" field
+      MUST be either a JSONString or a JSONObject.  When its value is a
+      JSONObject, its format MUST be as the accept input parameters of
+      its resource.  When its value is a JSONString, it MUST be a
+      program written in the query language specified by the "query-
+      lang" field.
 
-
-
-Chen & Zhang            Expires December 24, 2018               [Page 4]
-
-Internet-Draft                  Multipart                      June 2018
-
+   query-lang:  Optional.  The value of the "query-lang" field MUST be
+      one of values in the "query-langs" capability.  If this field is
+      not specified in the request, the ALTO client SHOULD NOT use any
+      query language in the "input" field.
 
 5.4.  Capabilities
 
@@ -243,6 +271,16 @@ Internet-Draft                  Multipart                      June 2018
 
    TODO: We need to define new error type to indicate errors caused by
    the queried resources instead of the Multipart Query resource.
+
+
+
+
+
+
+Chen & Zhang            Expires December 29, 2018               [Page 5]
+
+Internet-Draft                  Multipart                      June 2018
+
 
 7.  Examples
 
@@ -274,14 +312,6 @@ Internet-Draft                  Multipart                      June 2018
            "uri": "http://alto.example.com/costmap",
            "media-type": "application/alto-costmap+json",
            "capabilities": {
-
-
-
-Chen & Zhang            Expires December 24, 2018               [Page 5]
-
-Internet-Draft                  Multipart                      June 2018
-
-
              "cost-type-names": [ "num-routingcost" ]
            },
            "uses": [ "my-default-networkmap" ]
@@ -300,6 +330,14 @@ Internet-Draft                  Multipart                      June 2018
            "media-type": "application/alto-endpointcost+json",
            "accepts": "application/alto-endpointcostparams+json",
            "capabilities": {
+
+
+
+Chen & Zhang            Expires December 29, 2018               [Page 6]
+
+Internet-Draft                  Multipart                      June 2018
+
+
              "cost-constraints": true,
              "cost-type-names": [ "path-vector" ],
            },
@@ -320,7 +358,7 @@ Internet-Draft                  Multipart                      June 2018
            "accepts": "application/alto-propmapparams+json",
            "capabilities": {
              "domain-types": [ "pid" ],
-             "prop-types": [ "location" ]
+             "prop-types": [ "country", "state" ]
            }
          },
          "multipart-query": {
@@ -328,21 +366,33 @@ Internet-Draft                  Multipart                      June 2018
            "media-type": "multipart/related",
            "accepts": "application/alto-multipartquery+json",
            "capabilities": {
-             "query-langs": [ "xquery" ]
+             "query-langs": [ "xquery", "jsoniq" ]
            }
-
-
-
-Chen & Zhang            Expires December 24, 2018               [Page 6]
-
-Internet-Draft                  Multipart                      June 2018
-
-
          }
        }
      }
 
 7.2.  Example 1: Simple Batch Query
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Chen & Zhang            Expires December 29, 2018               [Page 7]
+
+Internet-Draft                  Multipart                      June 2018
+
 
    POST /multipart HTTP/1.1
    Host: alto.example.com
@@ -353,18 +403,312 @@ Internet-Draft                  Multipart                      June 2018
    {
      "resources": [
        {
-         "resource-id": "default-network-map"
+         "resource-id": "my-default-networkmap"
        },
        {
-         "resource-id": "default-cost-map"
+         "resource-id": "my-default-costmap"
        }
      ]
    }
 
+   HTTP/1.1 200 OK
+   Content-Lenght: [TBD]
+   Content-Type: multipart/related; boundary=simple-batch-query
+
+   --simple-batch-query
+   Content-Type: application/alto-networkmap+json
+
+   {
+     "meta": {
+       "vtag": {
+         "resource-id": "my-default-networkmap",
+         "tag": "75ed013b3cb58f896e839582504f622838ce670f"
+       }
+     },
+     "network-map": {
+       "PID1" : {
+         "ipv4" : [
+           "192.0.2.0/24",
+           "198.51.100.0/25"
+         ]
+       },
+       "PID2" : {
+         "ipv4" : [
+           "198.51.100.128/25"
+         ]
+       },
+       "PID3" : {
+         "ipv4" : [
+           "0.0.0.0/0"
+         ],
+         "ipv6" : [
+
+
+
+Chen & Zhang            Expires December 29, 2018               [Page 8]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+           "::/0"
+         ]
+       }
+     }
+   }
+
+   --simple-batch-query
+   Content-Type: application/alto-costmap+json
+
+   {
+     "meta": {
+       "dependent-vtags": [
+         {
+           "resource-id": "my-default-networkmap",
+           "tag": "75ed013b3cb58f896e839582504f622838ce670f"
+         }
+       ],
+       "cost-type": {
+         "cost-mode": "numerical",
+         "cost-metric": "routingcost"
+       }
+     },
+     "cost-map": {
+       "PID1": { "PID1": 1,  "PID2": 5,  "PID3": 10 },
+       "PID2": { "PID1": 5,  "PID2": 1,  "PID3": 15 },
+       "PID3": { "PID1": 20, "PID2": 15  }
+     }
+   }
 
 7.3.  Example 2: Properties Constrained Query
 
+   NOTE: In this example, we use the "`" block to express the raw string
+   with unescaped characters like "\n" and "\"".  It is not valid HTTP
+   body, but only used to better present.  When the request is sent to
+   the ALTO server, the "`" block should be escaped.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Chen & Zhang            Expires December 29, 2018               [Page 9]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+ POST /multipart HTTP/1.1
+ Host: alto.example.com
+ Accept: multipart/related, application/alto-error+json
+ Content-Lenght: [TBD]
+ Content-Type: application/alto-multipartquery+json
+
+ {
+   "query-lang": "jsoniq",
+   "resources": [
+     {
+       "resource-id": "propmap-location"
+     },
+     {
+       "resource-id": "my-default-costmap",
+       "input": `
+         let $propmap := collection("propmap-location").("property-map")
+         return {
+           "cost-type": {
+             "cost-mode": "numerical",
+             "cost-metric": "hopcount"
+           },
+           "pids": {
+             "srcs": [
+               for $pid in keys($propmap)
+               where $propmap.$pid.country eq "US"
+               return substring-after($pid, "PID:")
+             ],
+             "dsts": [
+               for $pid in keys($propmap)
+               where $propmap.$pid.country eq "CA"
+               return substring-after($pid, "PID:")
+             ]
+           }
+         }
+       `
+     }
+   ]
+ }
+
+   HTTP/1.1 200 OK
+   Content-Lenght: [TBD]
+   Content-Type: multipart/related; boundary=prop-const-query
+
+   --prop-const-query
+   Content-Type: application/alto-propmap+json
+
+   {
+     "property-map": {
+
+
+
+Chen & Zhang            Expires December 29, 2018              [Page 10]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+       "pid:PID1": {
+         "country": "US",
+         "state": "CA"
+       },
+       "pid:PID2": {
+         "country": "US",
+         "state": "CT"
+       },
+       "pid:PID3": {
+         "country": "CA",
+         "state": "QC"
+       },
+       "pid:PID4": {
+         "country": "CA",
+         "state": "NT"
+       },
+       "pid:PID5": {
+         "country": "FR"
+       },
+     }
+   }
+
+   --prop-const-query
+   Content-Type: application/alto-costmap+json
+
+   {
+     "meta": {
+       "cost-type": {
+         "cost-mode": "numerical",
+         "cost-metric": "hopcount"
+       }
+     },
+     "cost-map": {
+       "PID1": {
+         "PID3": 5,
+         "PID4": 7
+       },
+       "PID2": {
+         "PID3": 8,
+         "PID4": 4
+       }
+     }
+   }
+
+
+
+
+
+
+
+
+Chen & Zhang            Expires December 29, 2018              [Page 11]
+
+Internet-Draft                  Multipart                      June 2018
+
+
 7.4.  Example 3: Path Vector Query
+
+POST /multipart HTTP/1.1
+Host: alto.example.com
+Accept: multipart/related, application/alto-error+json
+Content-Lenght: [TBD]
+Content-Type: application/alto-multipartquery+json
+
+{
+  "query-lang": "jsoniq",
+  "resources": [
+    {
+      "resource-id": "endpoint-path-vector",
+      "input": {
+        "cost-type": {
+          "cost-mode": "array",
+          "cost-metric": "ane-path"
+        },
+        "endpoints": {
+          "srcs": [ "ipv4:192.0.2.2" ],
+          "dsts": [ "ipv4:192.0.2.89",
+                    "ipv4:203.0.113.45" ]
+        }
+      }
+    },
+    {
+      "resource-id": "propmap-availbw",
+      "input": `
+        let $propmap := collection("endpiont-path-vector").("endpoint-cost-map")
+        return {
+          "entities": [
+            distinct-values(flatten(
+              for $src in keys($propmap)
+              let $dsts := $propmap.$src
+              return flatten(
+                for $dst in keys($dsts)
+                return $dsts.$dst
+              )
+            ))
+          ],
+          "properties": [ "availbw" ]
+        }
+      `
+    }
+  ]
+}
+
+
+
+
+
+Chen & Zhang            Expires December 29, 2018              [Page 12]
+
+Internet-Draft                  Multipart                      June 2018
+
+
+   HTTP/1.1 200 OK
+   Content-Length: [TBD]
+   Content-Type: multipart/related; boundary=path-vector-query
+
+   --path-vector-query
+   Content-Type: application/alto-endpointcost+json
+
+   {
+     "meta": {
+       "cost-type": {
+         "cost-mode": "array",
+         "cost-metric": "ane-path"
+       }
+     },
+     "endpoint-cost-map": {
+       "ipv4:192.0.2.2": {
+         "ipv4:192.0.2.89":   [ "ane:L001", "ane:L003", "ane:L004" ],
+         "ipv4:203.0.113.45": [ "ane:L001", "ane:L004", "ane:L005" ],
+         "ipv6:2001:db8::10": [ "ane:L001", "ane:L005", "ane:L007" ]
+       }
+     }
+   }
+
+   --path-vector-query
+   Content-Type: application/alto-propmap+json
+
+   {
+     "property-map": {
+       "ane:L001": { "availbw": 50 },
+       "ane:L003": { "availbw": 48 },
+       "ane:L004": { "availbw": 55 },
+       "ane:L005": { "availbw": 60 },
+       "ane:L007": { "availbw": 35 }
+     }
+   }
 
 8.  Compatibility
 
@@ -378,21 +722,17 @@ Internet-Draft                  Multipart                      June 2018
 
    o  ALTO Multi-Cost
 
-   o  ALTO Incremental Update using SSE
-
-   o  Path Vector
 
 
 
-
-
-
-
-
-Chen & Zhang            Expires December 24, 2018               [Page 7]
+Chen & Zhang            Expires December 29, 2018              [Page 13]
 
 Internet-Draft                  Multipart                      June 2018
 
+
+   o  ALTO Incremental Update using SSE
+
+   o  Path Vector
 
 9.  Misc Considerations
 
@@ -437,18 +777,18 @@ Internet-Draft                  Multipart                      June 2018
    Interoperability considerations:  This document specifies formats of
       conforming messages and the interpretation thereof.
 
-   Published specification:  This document is the specification for
-      these media types; see Table 1 for the section documenting each
-      media type.
 
 
 
 
-
-Chen & Zhang            Expires December 24, 2018               [Page 8]
+Chen & Zhang            Expires December 29, 2018              [Page 14]
 
 Internet-Draft                  Multipart                      June 2018
 
+
+   Published specification:  This document is the specification for
+      these media types; see Table 1 for the section documenting each
+      media type.
 
    Applications that use this media type:  ALTO servers and ALTO clients
       either stand alone or are embedded within other applications.
@@ -493,18 +833,24 @@ Internet-Draft                  Multipart                      June 2018
               Vector Cost Type", draft-ietf-alto-path-vector-03 (work in
               progress), March 2018.
 
+
+
+
+
+Chen & Zhang            Expires December 29, 2018              [Page 15]
+
+Internet-Draft                  Multipart                      June 2018
+
+
    [I-D.ietf-alto-unified-props-new]
               Roome, W., Chen, S., Randriamasy, S., Yang, Y., and J.
               Zhang, "Unified Properties for the ALTO Protocol", draft-
               ietf-alto-unified-props-new-03 (work in progress), March
               2018.
 
-
-
-Chen & Zhang            Expires December 24, 2018               [Page 9]
-
-Internet-Draft                  Multipart                      June 2018
-
+   [JSONIQ]   Robie, J., Fourny, G., Brantner, M., Florescu, D.,
+              Westmann, T., and M. Zaharioudakis, "JSONiq - the SQL of
+              NoSQL 1.0", JSONiq , 2015.
 
    [RFC2046]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
               Extensions (MIME) Part Two: Media Types", RFC 2046,
@@ -545,6 +891,13 @@ Authors' Addresses
    Email: dawn_chen_f@hotmail.com
 
 
+
+
+Chen & Zhang            Expires December 29, 2018              [Page 16]
+
+Internet-Draft                  Multipart                      June 2018
+
+
    Jingxuan Jensen Zhang
    Tongji University
    4800 Cao'An Hwy
@@ -557,4 +910,43 @@ Authors' Addresses
 
 
 
-Chen & Zhang            Expires December 24, 2018              [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Chen & Zhang            Expires December 29, 2018              [Page 17]

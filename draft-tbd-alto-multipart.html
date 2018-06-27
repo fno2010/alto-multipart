@@ -318,7 +318,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Chen, S. and J. Zhang" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-tbd-alto-multipart-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-22" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-27" />
   <meta name="dct.abstract" content="An extension to support the multiple ALTO resources query." />
   <meta name="description" content="An extension to support the multiple ALTO resources query." />
 
@@ -342,8 +342,8 @@ ul.toc li {
 <td class="right">Tongji University</td>
 </tr>
 <tr>
-<td class="left">Expires: December 24, 2018</td>
-<td class="right">June 22, 2018</td>
+<td class="left">Expires: December 29, 2018</td>
+<td class="right">June 27, 2018</td>
 </tr>
 
     	
@@ -359,7 +359,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 24, 2018.</p>
+<p>This Internet-Draft will expire on December 29, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -501,7 +501,7 @@ ul.toc li {
 
 <ul>
 <li>Multipart message <a href="#RFC2046" class="xref">[RFC2046]</a> for compound resources.</li>
-<li>XQuery <a href="#W3CXQUERY" class="xref">[W3CXQUERY]</a> for general query process and relational joint query</li>
+<li>JSON Query Language like XQuery <a href="#W3CXQUERY" class="xref">[W3CXQUERY]</a> and JSONiq <a href="#JSONIQ" class="xref">[JSONIQ]</a> for general query process and relational joint query.</li>
 </ul>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#multipart-query-resource" id="multipart-query-resource">Multipart Query Resource</a>
@@ -509,7 +509,7 @@ ul.toc li {
 <h1 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#media-type" id="media-type">Media Type</a>
 </h1>
-<p><samp>multipart/mixed</samp> <a href="#RFC2046" class="xref">[RFC2046]</a> or <samp>multipart/related</samp> <a href="#RFC2387" class="xref">[RFC2387]</a>.</p>
+<p><samp>multipart/related</samp> <a href="#RFC2387" class="xref">[RFC2387]</a>.</p>
 <h1 id="rfc.section.5.2">
 <a href="#rfc.section.5.2">5.2.</a> <a href="#http-method" id="http-method">HTTP Method</a>
 </h1>
@@ -517,18 +517,27 @@ ul.toc li {
 <h1 id="rfc.section.5.3">
 <a href="#rfc.section.5.3">5.3.</a> <a href="#mp-query-params" id="mp-query-params">Accept Input Parameters</a>
 </h1>
-<p><samp>application/alto-multipartquery+json</samp>.</p>
+<p id="rfc.section.5.3.p.1">The input parameters for a Multipart Query request are supplied in the entity body of the POST request. This document specifies the input parameters with a data format indicated by the media type <samp>application/alto-multipartquery+alto</samp>, which is a JSON object of type ReqMultipartQuery:</p>
 <pre>
-    object {
-      JsonString      resource-id;
-      [JsonObject     input;]
-    } ResourceQuery;
-
     object {
       ResourceQuery   resources&lt;1..*&gt;;
       [JsonString     query-lang;]
     } ReqMultipartQuery;
+
+    object {
+      JsonString      resource-id;
+      [JsonValue      input;]
+    } ResourceQuery;
 </pre>
+<p id="rfc.section.5.3.p.2">with fields:</p>
+<p></p>
+
+<dl>
+<dt>resources:</dt>
+<dd style="margin-left: 8">List of ResourceQuery objects for which resources are to be queried and how to query them. Each ResourceQuery object MUST include the <samp>resource-id</samp> field to indicate which resource is to be queried. If the queried resource requires the POST method, the <samp>input</samp> field MUST be specified. The value of the <samp>input</samp> field MUST be either a JSONString or a JSONObject. When its value is a JSONObject, its format MUST be as the accept input parameters of its resource.  When its value is a JSONString, it MUST be a program written in the query language specified by the <samp>query-lang</samp> field.</dd>
+<dt>query-lang:</dt>
+<dd style="margin-left: 8">Optional. The value of the <samp>query-lang</samp> field MUST be one of values in the <samp>query-langs</samp> capability. If this field is not specified in the request, the ALTO client SHOULD NOT use any query language in the <samp>input</samp> field.</dd>
+</dl>
 <h1 id="rfc.section.5.4">
 <a href="#rfc.section.5.4">5.4.</a> <a href="#capabilities" id="capabilities">Capabilities</a>
 </h1>
@@ -618,7 +627,7 @@ ul.toc li {
         "accepts": "application/alto-propmapparams+json",
         "capabilities": {
           "domain-types": [ "pid" ],
-          "prop-types": [ "location" ]
+          "prop-types": [ "country", "state" ]
         }
       },
       "multipart-query": {
@@ -626,7 +635,7 @@ ul.toc li {
         "media-type": "multipart/related",
         "accepts": "application/alto-multipartquery+json",
         "capabilities": {
-          "query-langs": [ "xquery" ]
+          "query-langs": [ "xquery", "jsoniq" ]
         }
       }
     }
@@ -645,21 +654,259 @@ Content-Type: application/alto-multipartquery+json
 {
   "resources": [
     {
-      "resource-id": "default-network-map"
+      "resource-id": "my-default-networkmap"
     },
     {
-      "resource-id": "default-cost-map"
+      "resource-id": "my-default-costmap"
     }
   ]
 }
+</pre>
+<pre>
+HTTP/1.1 200 OK
+Content-Lenght: [TBD]
+Content-Type: multipart/related; boundary=simple-batch-query
 
+--simple-batch-query
+Content-Type: application/alto-networkmap+json
+
+{
+  "meta": {
+    "vtag": {
+      "resource-id": "my-default-networkmap",
+      "tag": "75ed013b3cb58f896e839582504f622838ce670f"
+    }
+  },
+  "network-map": {
+    "PID1" : {
+      "ipv4" : [
+        "192.0.2.0/24",
+        "198.51.100.0/25"
+      ]
+    },
+    "PID2" : {
+      "ipv4" : [
+        "198.51.100.128/25"
+      ]
+    },
+    "PID3" : {
+      "ipv4" : [
+        "0.0.0.0/0"
+      ],
+      "ipv6" : [
+        "::/0"
+      ]
+    }
+  }
+}
+
+--simple-batch-query
+Content-Type: application/alto-costmap+json
+
+{
+  "meta": {
+    "dependent-vtags": [
+      {
+        "resource-id": "my-default-networkmap",
+        "tag": "75ed013b3cb58f896e839582504f622838ce670f"
+      }
+    ],
+    "cost-type": {
+      "cost-mode": "numerical",
+      "cost-metric": "routingcost"
+    }
+  },
+  "cost-map": {
+    "PID1": { "PID1": 1,  "PID2": 5,  "PID3": 10 },
+    "PID2": { "PID1": 5,  "PID2": 1,  "PID3": 15 },
+    "PID3": { "PID1": 20, "PID2": 15  }
+  }
+}
 </pre>
 <h1 id="rfc.section.7.3">
 <a href="#rfc.section.7.3">7.3.</a> <a href="#example-2-properties-constrained-query" id="example-2-properties-constrained-query">Example 2: Properties Constrained Query</a>
 </h1>
+<p id="rfc.section.7.3.p.1">NOTE: In this example, we use the &#8220;`&#8221; block to express the raw string with unescaped characters like <samp>\n</samp> and <samp>\"</samp>. It is not valid HTTP body, but only used to better present. When the request is sent to the ALTO server, the &#8220;`&#8221; block should be escaped.</p>
+<pre>
+POST /multipart HTTP/1.1
+Host: alto.example.com
+Accept: multipart/related, application/alto-error+json
+Content-Lenght: [TBD]
+Content-Type: application/alto-multipartquery+json
+
+{
+  "query-lang": "jsoniq",
+  "resources": [
+    {
+      "resource-id": "propmap-location"
+    },
+    {
+      "resource-id": "my-default-costmap",
+      "input": `
+        let $propmap := collection("propmap-location").("property-map")
+        return {
+          "cost-type": {
+            "cost-mode": "numerical",
+            "cost-metric": "hopcount"
+          },
+          "pids": {
+            "srcs": [
+              for $pid in keys($propmap)
+              where $propmap.$pid.country eq "US"
+              return substring-after($pid, "PID:")
+            ],
+            "dsts": [
+              for $pid in keys($propmap)
+              where $propmap.$pid.country eq "CA"
+              return substring-after($pid, "PID:")
+            ]
+          }
+        }
+      `
+    }
+  ]
+}
+</pre>
+<pre>
+HTTP/1.1 200 OK
+Content-Lenght: [TBD]
+Content-Type: multipart/related; boundary=prop-const-query
+
+--prop-const-query
+Content-Type: application/alto-propmap+json
+
+{
+  "property-map": {
+    "pid:PID1": {
+      "country": "US",
+      "state": "CA"
+    },
+    "pid:PID2": {
+      "country": "US",
+      "state": "CT"
+    },
+    "pid:PID3": {
+      "country": "CA",
+      "state": "QC"
+    },
+    "pid:PID4": {
+      "country": "CA",
+      "state": "NT"
+    },
+    "pid:PID5": {
+      "country": "FR"
+    },
+  }
+}
+
+--prop-const-query
+Content-Type: application/alto-costmap+json
+
+{
+  "meta": {
+    "cost-type": {
+      "cost-mode": "numerical",
+      "cost-metric": "hopcount"
+    }
+  },
+  "cost-map": {
+    "PID1": {
+      "PID3": 5,
+      "PID4": 7
+    },
+    "PID2": {
+      "PID3": 8,
+      "PID4": 4
+    }
+  }
+}
+</pre>
 <h1 id="rfc.section.7.4">
 <a href="#rfc.section.7.4">7.4.</a> <a href="#example-3-path-vector-query" id="example-3-path-vector-query">Example 3: Path Vector Query</a>
 </h1>
+<pre>
+POST /multipart HTTP/1.1
+Host: alto.example.com
+Accept: multipart/related, application/alto-error+json
+Content-Lenght: [TBD]
+Content-Type: application/alto-multipartquery+json
+
+{
+  "query-lang": "jsoniq",
+  "resources": [
+    {
+      "resource-id": "endpoint-path-vector",
+      "input": {
+        "cost-type": {
+          "cost-mode": "array",
+          "cost-metric": "ane-path"
+        },
+        "endpoints": {
+          "srcs": [ "ipv4:192.0.2.2" ],
+          "dsts": [ "ipv4:192.0.2.89",
+                    "ipv4:203.0.113.45" ]
+        }
+      }
+    },
+    {
+      "resource-id": "propmap-availbw",
+      "input": `
+        let $propmap := collection("endpiont-path-vector").("endpoint-cost-map")
+        return {
+          "entities": [
+            distinct-values(flatten(
+              for $src in keys($propmap)
+              let $dsts := $propmap.$src
+              return flatten(
+                for $dst in keys($dsts)
+                return $dsts.$dst
+              )
+            ))
+          ],
+          "properties": [ "availbw" ]
+        }
+      `
+    }
+  ]
+}
+</pre>
+<pre>
+HTTP/1.1 200 OK
+Content-Length: [TBD]
+Content-Type: multipart/related; boundary=path-vector-query
+
+--path-vector-query
+Content-Type: application/alto-endpointcost+json
+
+{
+  "meta": {
+    "cost-type": {
+      "cost-mode": "array",
+      "cost-metric": "ane-path"
+    }
+  },
+  "endpoint-cost-map": {
+    "ipv4:192.0.2.2": {
+      "ipv4:192.0.2.89":   [ "ane:L001", "ane:L003", "ane:L004" ],
+      "ipv4:203.0.113.45": [ "ane:L001", "ane:L004", "ane:L005" ],
+      "ipv6:2001:db8::10": [ "ane:L001", "ane:L005", "ane:L007" ]
+    }
+  }
+}
+
+--path-vector-query
+Content-Type: application/alto-propmap+json
+
+{
+  "property-map": {
+    "ane:L001": { "availbw": 50 },
+    "ane:L003": { "availbw": 48 },
+    "ane:L004": { "availbw": 55 },
+    "ane:L005": { "availbw": 60 },
+    "ane:L007": { "availbw": 35 }
+  }
+}
+</pre>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#compatibility" id="compatibility">Compatibility</a>
 </h1>
@@ -775,6 +1022,11 @@ Content-Type: application/alto-multipartquery+json
 <td class="reference"><b id="I-D.ietf-alto-unified-props-new">[I-D.ietf-alto-unified-props-new]</b></td>
 <td class="top">
 <a>Roome, W.</a>, <a>Chen, S.</a>, <a>Randriamasy, S.</a>, <a>Yang, Y.</a> and <a>J. Zhang</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-unified-props-new-03">Unified Properties for the ALTO Protocol</a>", Internet-Draft draft-ietf-alto-unified-props-new-03, March 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="JSONIQ">[JSONIQ]</b></td>
+<td class="top">
+<a>Robie, J.</a>, <a>Fourny, G.</a>, <a>Brantner, M.</a>, <a>Florescu, D.</a>, <a>Westmann, T.</a> and <a>M. Zaharioudakis</a>, "<a>JSONiq - the SQL of NoSQL 1.0</a>", JSONiq , 2015.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2046">[RFC2046]</b></td>
