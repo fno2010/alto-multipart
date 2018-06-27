@@ -69,6 +69,30 @@ informative:
     date: 2014
     seriesinfo:
       W3C: Recommendation, W3C
+  JSONIQ:
+    title: "JSONiq - the SQL of NoSQL 1.0"
+    author:
+      -
+        ins: J. Robie
+        name: Jonathan Robie
+      -
+        ins: G. Fourny
+        name: Ghislain Fourny
+      -
+        ins: M. Brantner
+        name: Matthias Brantner
+      -
+        ins: D. Florescu
+        name: Daniela Florescu
+      -
+        ins: T. Westmann
+        name: Till Westmann
+      -
+        ins: M. Zaharioudakis
+        name: Markos Zaharioudakis
+    date: 2015
+    seriesinfo:
+      JSONiq:
 
 --- abstract
 
