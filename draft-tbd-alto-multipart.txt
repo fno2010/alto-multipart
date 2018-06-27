@@ -75,11 +75,11 @@ Table of Contents
      5.3.  Accept Input Parameters . . . . . . . . . . . . . . . . .   4
      5.4.  Capabilities  . . . . . . . . . . . . . . . . . . . . . .   5
      5.5.  Uses  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     5.6.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   5
-   6.  Protocol Errors . . . . . . . . . . . . . . . . . . . . . . .   5
+     5.6.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   6.  Protocol Errors . . . . . . . . . . . . . . . . . . . . . . .   6
    7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   6
      7.1.  IRD Example . . . . . . . . . . . . . . . . . . . . . . .   6
-     7.2.  Example 1: Simple Batch Query . . . . . . . . . . . . . .   7
+     7.2.  Example 1: Simple Batch Query . . . . . . . . . . . . . .   8
      7.3.  Example 2: Properties Constrained Query . . . . . . . . .   9
      7.4.  Example 3: Path Vector Query  . . . . . . . . . . . . . .  12
    8.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .  13
@@ -256,23 +256,23 @@ Internet-Draft                  Multipart                      June 2018
 
 5.4.  Capabilities
 
+   The capabilities are defined by an object of type
+   MultipartQueryCapabilities:
+
        object {
-         JsonString query-langs<0..*>;
+         JSONString query-langs<0..*>;
        } MultipartQueryCapabilities;
+
+   where "query-langs" is an array of JSONString to indicate which query
+   languages are supported by this resource.
 
 5.5.  Uses
 
-   Any available ALTO resources rather than the multipart query service
-   resource.
-
-5.6.  Response
-
-6.  Protocol Errors
-
-   TODO: We need to define new error type to indicate errors caused by
-   the queried resources instead of the Multipart Query resource.
-
-
+   An array with the resource ID(s) of resource(s) which this multipart
+   query resource can compound.  The used resource can be any available
+   ALTO resources except for the multipart query resource.  If the
+   "uses" field is not specified, all the available ALTO resources can
+   be queried except for the multipart query resource.
 
 
 
@@ -281,6 +281,17 @@ Chen & Zhang            Expires December 29, 2018               [Page 5]
 
 Internet-Draft                  Multipart                      June 2018
 
+
+5.6.  Response
+
+   The response of multipart query resource is a multipart message.
+   Each part of this multipart message is the response of a queried
+   resource in the request.
+
+6.  Protocol Errors
+
+   TODO: We need to define new error type to indicate errors caused by
+   the queried resources instead of the Multipart Query resource.
 
 7.  Examples
 
@@ -319,6 +330,14 @@ Internet-Draft                  Multipart                      June 2018
          "my-filtered-costmap": {
            "uri": "http://alto.example.com/costmap/filtered",
            "media-type": "application/alto-costmap+json",
+
+
+
+Chen & Zhang            Expires December 29, 2018               [Page 6]
+
+Internet-Draft                  Multipart                      June 2018
+
+
            "accepts": "application/alto-costmapfilter+json",
            "capabilities": {
              "cost-type-names": [ "num-hopcount" ]
@@ -330,14 +349,6 @@ Internet-Draft                  Multipart                      June 2018
            "media-type": "application/alto-endpointcost+json",
            "accepts": "application/alto-endpointcostparams+json",
            "capabilities": {
-
-
-
-Chen & Zhang            Expires December 29, 2018               [Page 6]
-
-Internet-Draft                  Multipart                      June 2018
-
-
              "cost-constraints": true,
              "cost-type-names": [ "path-vector" ],
            },
@@ -372,17 +383,6 @@ Internet-Draft                  Multipart                      June 2018
        }
      }
 
-7.2.  Example 1: Simple Batch Query
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -393,6 +393,8 @@ Chen & Zhang            Expires December 29, 2018               [Page 7]
 
 Internet-Draft                  Multipart                      June 2018
 
+
+7.2.  Example 1: Simple Batch Query
 
    POST /multipart HTTP/1.1
    Host: alto.example.com
@@ -440,8 +442,6 @@ Internet-Draft                  Multipart                      June 2018
        "PID3" : {
          "ipv4" : [
            "0.0.0.0/0"
-         ],
-         "ipv6" : [
 
 
 
@@ -450,6 +450,8 @@ Chen & Zhang            Expires December 29, 2018               [Page 8]
 Internet-Draft                  Multipart                      June 2018
 
 
+         ],
+         "ipv6" : [
            "::/0"
          ]
        }
@@ -485,8 +487,6 @@ Internet-Draft                  Multipart                      June 2018
    with unescaped characters like "\n" and "\"".  It is not valid HTTP
    body, but only used to better present.  When the request is sent to
    the ALTO server, the "`" block should be escaped.
-
-
 
 
 

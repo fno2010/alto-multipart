@@ -541,18 +541,21 @@ ul.toc li {
 <h1 id="rfc.section.5.4">
 <a href="#rfc.section.5.4">5.4.</a> <a href="#capabilities" id="capabilities">Capabilities</a>
 </h1>
+<p id="rfc.section.5.4.p.1">The capabilities are defined by an object of type MultipartQueryCapabilities:</p>
 <pre>
     object {
-      JsonString query-langs&lt;0..*&gt;;
+      JSONString query-langs&lt;0..*&gt;;
     } MultipartQueryCapabilities;
 </pre>
+<p id="rfc.section.5.4.p.2">where <samp>query-langs</samp> is an array of JSONString to indicate which query languages are supported by this resource.</p>
 <h1 id="rfc.section.5.5">
 <a href="#rfc.section.5.5">5.5.</a> <a href="#uses" id="uses">Uses</a>
 </h1>
-<p id="rfc.section.5.5.p.1">Any available ALTO resources rather than the multipart query service resource.</p>
+<p id="rfc.section.5.5.p.1">An array with the resource ID(s) of resource(s) which this multipart query resource can compound. The used resource can be any available ALTO resources except for the multipart query resource. If the <samp>uses</samp> field is not specified, all the available ALTO resources can be queried except for the multipart query resource.</p>
 <h1 id="rfc.section.5.6">
 <a href="#rfc.section.5.6">5.6.</a> <a href="#response" id="response">Response</a>
 </h1>
+<p id="rfc.section.5.6.p.1">The response of multipart query resource is a multipart message. Each part of this multipart message is the response of a queried resource in the request.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#protocol-errors" id="protocol-errors">Protocol Errors</a>
 </h1>
