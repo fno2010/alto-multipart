@@ -26,9 +26,6 @@ To be summarized, we need the multipart query service for three reasons:
   the server should guarantee the responses of all resources are generated at
   the same time.
 - Some use cases need to query multiple ALTO resources with a joint relationship.
-- Some use cases may need the server generates "anonymous" ALTO resources for
-  the on-demand information. The "anonymous" ALTO resources usually cannot
-  appear alone but need to bind with some "non-anonymous" ALTO resources.
 
 This document defines a new ALTO services for: (1) querying multiple ALTO resources
 in a single request/response, and (2) supporting general-purpose JSON query

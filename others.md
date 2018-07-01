@@ -1,22 +1,45 @@
 # Compatibility
 
+## Compatibility with Legacy ALTO Clients/Servers ##
+
 TODO: Discuss the compatibility with the standard ALTO protocol, especially the
 POST-based resources.
 
-TODO: Discuss the compatibility with the following known ALTO extensions:
+## Compatibility with Existing Protocol Extensions ##
+
+TODO: Discuss the compatibility with known documents only extending the base
+protocol but not changing the basic request/response mechanism.
 
 - ALTO Calendar
 - ALTO Multi-Cost
-- ALTO Incremental Update using SSE
 - Path Vector
+
+## Compatibility with New Communication Mechanism ##
+
+TODO: Discuss the compatibility with the extension introducing new communication
+mechanism:
+
+- ALTO Incremental Update using SSE
 
 # Misc Considerations
 
 ## Support Incremental Update
 
+Because the response body entry of the multipart query resource is not a single
+JSON object, it may not be compatible with the existing incremental update
+representation.
+
 ## Anonymous Resources
 
+Some use cases may need the server generates "anonymous" ALTO resources for the
+on-demand information. The "anonymous" ALTO resources usually cannot appear
+alone but need to bind with some "non-anonymous" ALTO resources.
+
 # Security Considerations
+
+Allow the ALTO clients to upload the query language script may not be safe. The
+script injection and many potential attacks can be conducted. The security issue
+should be discussed and considered.
 
 # IANA Considerations
 
