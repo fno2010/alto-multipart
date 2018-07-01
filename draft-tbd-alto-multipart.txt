@@ -89,21 +89,21 @@ Table of Contents
      7.3.  Example 2: Properties Constrained Query . . . . . . . . .  10
      7.4.  Example 3: Path Vector Query  . . . . . . . . . . . . . .  13
    8.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .  14
+     8.1.  Compatibility with Legacy ALTO Clients/Servers  . . . . .  14
+     8.2.  Compatibility with Existing Protocol Extensions . . . . .  14
+     8.3.  Compatibility with New Communication Mechanism  . . . . .  15
    9.  Misc Considerations . . . . . . . . . . . . . . . . . . . . .  15
      9.1.  Support Incremental Update  . . . . . . . . . . . . . . .  15
      9.2.  Anonymous Resources . . . . . . . . . . . . . . . . . . .  15
    10. Security Considerations . . . . . . . . . . . . . . . . . . .  15
    11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
      11.1.  application/alto-* Media Types . . . . . . . . . . . . .  15
-   12. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  16
-   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     13.1.  Normative References . . . . . . . . . . . . . . . . . .  16
+   12. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  17
+   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     13.1.  Normative References . . . . . . . . . . . . . . . . . .  17
      13.2.  Informative References . . . . . . . . . . . . . . . . .  17
-   Appendix A.  Figures  . . . . . . . . . . . . . . . . . . . . . .  17
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
-
-
-
+   Appendix A.  Figures  . . . . . . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
@@ -148,11 +148,6 @@ Internet-Draft                  Multipart                      July 2018
    o  Some use cases need to query multiple ALTO resources with a joint
       relationship.
 
-   o  Some use cases may need the server generates "anonymous" ALTO
-      resources for the on-demand information.  The "anonymous" ALTO
-      resources usually cannot appear alone but need to bind with some
-      "non-anonymous" ALTO resources.
-
    This document defines a new ALTO services for: (1) querying multiple
    ALTO resources in a single request/response, and (2) supporting
    general-purpose JSON query languages to resolve the relational query.
@@ -162,6 +157,11 @@ Internet-Draft                  Multipart                      July 2018
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
+
+
+
+
+
 
 
 
@@ -768,16 +768,16 @@ Internet-Draft                  Multipart                      July 2018
 
 8.  Compatibility
 
+8.1.  Compatibility with Legacy ALTO Clients/Servers
+
    TODO: Discuss the compatibility with the standard ALTO protocol,
    especially the POST-based resources.
 
-   TODO: Discuss the compatibility with the following known ALTO
-   extensions:
+8.2.  Compatibility with Existing Protocol Extensions
 
-   o  ALTO Calendar
-
-   o  ALTO Multi-Cost
-
+   TODO: Discuss the compatibility with known documents only extending
+   the base protocol but not changing the basic request/response
+   mechanism.
 
 
 
@@ -786,17 +786,39 @@ Chen & Zhang             Expires January 2, 2019               [Page 14]
 Internet-Draft                  Multipart                      July 2018
 
 
-   o  ALTO Incremental Update using SSE
+   o  ALTO Calendar
+
+   o  ALTO Multi-Cost
 
    o  Path Vector
+
+8.3.  Compatibility with New Communication Mechanism
+
+   TODO: Discuss the compatibility with the extension introducing new
+   communication mechanism:
+
+   o  ALTO Incremental Update using SSE
 
 9.  Misc Considerations
 
 9.1.  Support Incremental Update
 
+   Because the response body entry of the multipart query resource is
+   not a single JSON object, it may not be compatible with the existing
+   incremental update representation.
+
 9.2.  Anonymous Resources
 
+   Some use cases may need the server generates "anonymous" ALTO
+   resources for the on-demand information.  The "anonymous" ALTO
+   resources usually cannot appear alone but need to bind with some
+   "non-anonymous" ALTO resources.
+
 10.  Security Considerations
+
+   Allow the ALTO clients to upload the query language script may not be
+   safe.  The script injection and many potential attacks can be
+   conducted.  The security issue should be discussed and considered.
 
 11.  IANA Considerations
 
@@ -812,6 +834,13 @@ Internet-Draft                  Multipart                      July 2018
         +-------------+--------------------------+---------------+
 
                    Table 1: Additional ALTO Media Type.
+
+
+
+Chen & Zhang             Expires January 2, 2019               [Page 15]
+
+Internet-Draft                  Multipart                      July 2018
+
 
    Type name:  application
 
@@ -832,15 +861,6 @@ Internet-Draft                  Multipart                      July 2018
 
    Interoperability considerations:  This document specifies formats of
       conforming messages and the interpretation thereof.
-
-
-
-
-
-Chen & Zhang             Expires January 2, 2019               [Page 15]
-
-Internet-Draft                  Multipart                      July 2018
-
 
    Published specification:  This document is the specification for
       these media types; see Table 1 for the section documenting each
@@ -870,6 +890,14 @@ Internet-Draft                  Multipart                      July 2018
    Change controller:  Internet Engineering Task Force
       (mailto:iesg@ietf.org).
 
+
+
+
+Chen & Zhang             Expires January 2, 2019               [Page 16]
+
+Internet-Draft                  Multipart                      July 2018
+
+
 12.  Acknowledgements
 
 13.  References
@@ -890,13 +918,6 @@ Internet-Draft                  Multipart                      July 2018
               "Application-Layer Traffic Optimization (ALTO) Protocol",
               RFC 7285, DOI 10.17487/RFC7285, September 2014,
               <https://www.rfc-editor.org/info/rfc7285>.
-
-
-
-Chen & Zhang             Expires January 2, 2019               [Page 16]
-
-Internet-Draft                  Multipart                      July 2018
-
 
 13.2.  Informative References
 
@@ -925,6 +946,14 @@ Internet-Draft                  Multipart                      July 2018
               Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
               2014, <https://www.rfc-editor.org/info/rfc7159>.
 
+
+
+
+Chen & Zhang             Expires January 2, 2019               [Page 17]
+
+Internet-Draft                  Multipart                      July 2018
+
+
    [W3CXQUERY]
               Robie, J., Chamberlin, D., Dyck, M., and J. Snelson,
               "XQuery 3.0: An XML query language", W3C Recommendation,
@@ -945,15 +974,6 @@ Authors' Addresses
    Email: dawn_chen_f@hotmail.com
 
 
-
-
-
-
-Chen & Zhang             Expires January 2, 2019               [Page 17]
-
-Internet-Draft                  Multipart                      July 2018
-
-
    Jingxuan Jensen Zhang
    Tongji University
    4800 Cao'An Hwy
@@ -961,26 +981,6 @@ Internet-Draft                  Multipart                      July 2018
    China
 
    Email: jingxuan.zhang@tongji.edu.cn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

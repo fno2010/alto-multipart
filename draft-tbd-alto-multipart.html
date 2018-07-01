@@ -300,6 +300,9 @@ ul.toc li {
 <link href="#rfc.section.7.3" rel="Chapter" title="7.3 Example 2: Properties Constrained Query">
 <link href="#rfc.section.7.4" rel="Chapter" title="7.4 Example 3: Path Vector Query">
 <link href="#rfc.section.8" rel="Chapter" title="8 Compatibility">
+<link href="#rfc.section.8.1" rel="Chapter" title="8.1 Compatibility with Legacy ALTO Clients/Servers">
+<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Compatibility with Existing Protocol Extensions">
+<link href="#rfc.section.8.3" rel="Chapter" title="8.3 Compatibility with New Communication Mechanism">
 <link href="#rfc.section.9" rel="Chapter" title="9 Misc Considerations">
 <link href="#rfc.section.9.1" rel="Chapter" title="9.1 Support Incremental Update">
 <link href="#rfc.section.9.2" rel="Chapter" title="9.2 Anonymous Resources">
@@ -418,7 +421,13 @@ ul.toc li {
 </li>
 </ul><li>8.   <a href="#rfc.section.8">Compatibility</a>
 </li>
-<li>9.   <a href="#rfc.section.9">Misc Considerations</a>
+<ul><li>8.1.   <a href="#rfc.section.8.1">Compatibility with Legacy ALTO Clients/Servers</a>
+</li>
+<li>8.2.   <a href="#rfc.section.8.2">Compatibility with Existing Protocol Extensions</a>
+</li>
+<li>8.3.   <a href="#rfc.section.8.3">Compatibility with New Communication Mechanism</a>
+</li>
+</ul><li>9.   <a href="#rfc.section.9">Misc Considerations</a>
 </li>
 <ul><li>9.1.   <a href="#rfc.section.9.1">Support Incremental Update</a>
 </li>
@@ -462,7 +471,6 @@ ul.toc li {
 <li>Clients may want to query multiple ALTO information resources in a single request to reduce the time consumption.</li>
 <li>Clients may want to query multiple ALTO resources consistently, which means the server should guarantee the responses of all resources are generated at the same time.</li>
 <li>Some use cases need to query multiple ALTO resources with a joint relationship.</li>
-<li>Some use cases may need the server generates &#8220;anonymous&#8221; ALTO resources for the on-demand information. The &#8220;anonymous&#8221; ALTO resources usually cannot appear alone but need to bind with some &#8220;non-anonymous&#8221; ALTO resources.</li>
 </ul>
 <p id="rfc.section.1.1.p.6">This document defines a new ALTO services for: (1) querying multiple ALTO resources in a single request/response, and (2) supporting general-purpose JSON query languages to resolve the relational query.</p>
 <h1 id="rfc.section.1.2">
@@ -924,28 +932,43 @@ Content-Type: application/alto-propmap+json
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#compatibility" id="compatibility">Compatibility</a>
 </h1>
-<p id="rfc.section.8.p.1">TODO: Discuss the compatibility with the standard ALTO protocol, especially the POST-based resources.</p>
-<p id="rfc.section.8.p.2">TODO: Discuss the compatibility with the following known ALTO extensions:</p>
+<h1 id="rfc.section.8.1">
+<a href="#rfc.section.8.1">8.1.</a> <a href="#compatibility-with-legacy-alto-clientsservers" id="compatibility-with-legacy-alto-clientsservers">Compatibility with Legacy ALTO Clients/Servers</a>
+</h1>
+<p id="rfc.section.8.1.p.1">TODO: Discuss the compatibility with the standard ALTO protocol, especially the POST-based resources.</p>
+<h1 id="rfc.section.8.2">
+<a href="#rfc.section.8.2">8.2.</a> <a href="#compatibility-with-existing-protocol-extensions" id="compatibility-with-existing-protocol-extensions">Compatibility with Existing Protocol Extensions</a>
+</h1>
+<p id="rfc.section.8.2.p.1">TODO: Discuss the compatibility with known documents only extending the base protocol but not changing the basic request/response mechanism.</p>
 <p></p>
 
 <ul>
 <li>ALTO Calendar</li>
 <li>ALTO Multi-Cost</li>
-<li>ALTO Incremental Update using SSE</li>
 <li>Path Vector</li>
 </ul>
+<h1 id="rfc.section.8.3">
+<a href="#rfc.section.8.3">8.3.</a> <a href="#compatibility-with-new-communication-mechanism" id="compatibility-with-new-communication-mechanism">Compatibility with New Communication Mechanism</a>
+</h1>
+<p id="rfc.section.8.3.p.1">TODO: Discuss the compatibility with the extension introducing new communication mechanism:</p>
+<p></p>
+
+<ul><li>ALTO Incremental Update using SSE</li></ul>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#misc-considerations" id="misc-considerations">Misc Considerations</a>
 </h1>
 <h1 id="rfc.section.9.1">
 <a href="#rfc.section.9.1">9.1.</a> <a href="#support-incremental-update" id="support-incremental-update">Support Incremental Update</a>
 </h1>
+<p id="rfc.section.9.1.p.1">Because the response body entry of the multipart query resource is not a single JSON object, it may not be compatible with the existing incremental update representation.</p>
 <h1 id="rfc.section.9.2">
 <a href="#rfc.section.9.2">9.2.</a> <a href="#anonymous-resources" id="anonymous-resources">Anonymous Resources</a>
 </h1>
+<p id="rfc.section.9.2.p.1">Some use cases may need the server generates &#8220;anonymous&#8221; ALTO resources for the on-demand information. The &#8220;anonymous&#8221; ALTO resources usually cannot appear alone but need to bind with some &#8220;non-anonymous&#8221; ALTO resources.</p>
 <h1 id="rfc.section.10">
 <a href="#rfc.section.10">10.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
+<p id="rfc.section.10.p.1">Allow the ALTO clients to upload the query language script may not be safe. The script injection and many potential attacks can be conducted. The security issue should be discussed and considered.</p>
 <h1 id="rfc.section.11">
 <a href="#rfc.section.11">11.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
