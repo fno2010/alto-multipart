@@ -2,7 +2,7 @@
 
 ## Media Type
 
-`multipart/related` {{?RFC2387}}.
+`multipart/related` {{RFC2387}}.
 
 ## HTTP Method
 

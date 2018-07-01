@@ -46,9 +46,9 @@ author:
 
 normative:
   RFC2119:
-informative:
   RFC2387:
   RFC7285:
+informative:
   I-D.ietf-alto-path-vector:
   I-D.ietf-alto-unified-props-new:
   W3CXQUERY:
@@ -96,7 +96,14 @@ informative:
 
 --- abstract
 
-An extension to support the multiple ALTO resources query.
+Many ALTO use cases involve multiple ALTO information resources like network
+map, cost map and property map to achieve their own goal. To make the ALTO
+client query them one by one is not only inefficient but also possible to
+introduce inconsistent issues. Further more, some ALTO information resources may
+have correlation, which means one's input parameters may depends on another
+one's response. So some advanced query schema is required. This document
+proposes an extension to support the multiple ALTO resources query with HTTP
+multipart message and the existing JSON query languages.
 
 --- middle
 

@@ -62,7 +62,7 @@ Assume the root IRD is like the following:
         }
       },
       "propmap-location": {
-        "uri": "http://alto.exmaple.com/propmap/delay",
+        "uri": "http://alto.exmaple.com/propmap/location",
         "media-type": "application/alto-propmap+json",
         "accepts": "application/alto-propmapparams+json",
         "capabilities": {
@@ -241,7 +241,7 @@ Content-Type: application/alto-propmap+json
     },
     "pid:PID5": {
       "country": "FR"
-    },
+    }
   }
 }
 
