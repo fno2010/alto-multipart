@@ -278,7 +278,8 @@ ul.toc li {
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Background">
-<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Terminologies">
+<link href="#rfc.section.1.2" rel="Chapter" title="1.2 Requirements Language">
+<link href="#rfc.section.1.3" rel="Chapter" title="1.3 Terminologies">
 <link href="#rfc.section.2" rel="Chapter" title="2 Use Cases">
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Simple Batch Query">
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Properties Constrained Query">
@@ -318,9 +319,9 @@ ul.toc li {
 
   <meta name="dct.creator" content="Chen, S. and J. Zhang" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-tbd-alto-multipart-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-27" />
-  <meta name="dct.abstract" content="An extension to support the multiple ALTO resources query." />
-  <meta name="description" content="An extension to support the multiple ALTO resources query." />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-01" />
+  <meta name="dct.abstract" content="Many ALTO use cases involve multiple ALTO information resources like network map, cost map and property map to achieve their own goal. To make the ALTO client query them one by one is not only inefficient but also possible to introduce inconsistent issues. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. So some advanced query schema is required. This document proposes an extension to support the multiple ALTO resources query with HTTP multipart message and the existing JSON query languages." />
+  <meta name="description" content="Many ALTO use cases involve multiple ALTO information resources like network map, cost map and property map to achieve their own goal. To make the ALTO client query them one by one is not only inefficient but also possible to introduce inconsistent issues. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. So some advanced query schema is required. This document proposes an extension to support the multiple ALTO resources query with HTTP multipart message and the existing JSON query languages." />
 
 </head>
 
@@ -342,8 +343,8 @@ ul.toc li {
 <td class="right">Tongji University</td>
 </tr>
 <tr>
-<td class="left">Expires: December 29, 2018</td>
-<td class="right">June 27, 2018</td>
+<td class="left">Expires: January 2, 2019</td>
+<td class="right">July 01, 2018</td>
 </tr>
 
     	
@@ -354,12 +355,12 @@ ul.toc li {
   <span class="filename">draft-tbd-alto-multipart-latest</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>An extension to support the multiple ALTO resources query.</p>
+<p>Many ALTO use cases involve multiple ALTO information resources like network map, cost map and property map to achieve their own goal. To make the ALTO client query them one by one is not only inefficient but also possible to introduce inconsistent issues. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. So some advanced query schema is required. This document proposes an extension to support the multiple ALTO resources query with HTTP multipart message and the existing JSON query languages.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 29, 2018.</p>
+<p>This Internet-Draft will expire on January 2, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -373,7 +374,9 @@ ul.toc li {
 </li>
 <ul><li>1.1.   <a href="#rfc.section.1.1">Background</a>
 </li>
-<li>1.2.   <a href="#rfc.section.1.2">Terminologies</a>
+<li>1.2.   <a href="#rfc.section.1.2">Requirements Language</a>
+</li>
+<li>1.3.   <a href="#rfc.section.1.3">Terminologies</a>
 </li>
 </ul><li>2.   <a href="#rfc.section.2">Use Cases</a>
 </li>
@@ -446,22 +449,30 @@ ul.toc li {
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">This document defines a new ALTO services for querying multiple ALTO resources in a single request.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#background" id="background">Background</a>
 </h1>
-<p id="rfc.section.1.1.p.1">We need the multipart query service for three reasons:</p>
+<p id="rfc.section.1.1.p.1">Application-Layer Traffic Optimization (ALTO) protocol <a href="#RFC7285" class="xref">[RFC7285]</a> and its extensions already define several kinds of information resources, like network map, cost map, property map, to expose useful network informations to applications. However, many applications cannot only use a single information resource to achieve their optimization goal. Retrieving multiple ALTO information resources is very common in many ALTO use cases.</p>
+<p id="rfc.section.1.1.p.2">Although the ALTO client can query multiple ALTO information resources one by one, it is not inefficient. And because the network delay between different requests and the frequent change of ALTO information resources, the responses may be inconsistent.</p>
+<p id="rfc.section.1.1.p.3">Further more, some ALTO information resources have known dependencies, which means the ALTO client may need one&#8217;s response to decide another one&#8217;s query input parameters.</p>
+<p id="rfc.section.1.1.p.4">To be summarized, we need the multipart query service for three reasons:</p>
 <p></p>
 
 <ul>
+<li>Clients may want to query multiple ALTO information resources in a single request to reduce the time consumption.</li>
 <li>Clients may want to query multiple ALTO resources consistently, which means the server should guarantee the responses of all resources are generated at the same time.</li>
 <li>Some use cases need to query multiple ALTO resources with a joint relationship.</li>
 <li>Some use cases may need the server generates &#8220;anonymous&#8221; ALTO resources for the on-demand information. The &#8220;anonymous&#8221; ALTO resources usually cannot appear alone but need to bind with some &#8220;non-anonymous&#8221; ALTO resources.</li>
 </ul>
+<p id="rfc.section.1.1.p.6">This document defines a new ALTO services for: (1) querying multiple ALTO resources in a single request/response, and (2) supporting general-purpose JSON query languages to resolve the relational query.</p>
 <h1 id="rfc.section.1.2">
-<a href="#rfc.section.1.2">1.2.</a> <a href="#terminologies" id="terminologies">Terminologies</a>
+<a href="#rfc.section.1.2">1.2.</a> <a href="#requirements-language" id="requirements-language">Requirements Language</a>
 </h1>
-<p id="rfc.section.1.2.p.1">TBD.</p>
+<p id="rfc.section.1.2.p.1">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
+<h1 id="rfc.section.1.3">
+<a href="#rfc.section.1.3">1.3.</a> <a href="#terminologies" id="terminologies">Terminologies</a>
+</h1>
+<p id="rfc.section.1.3.p.1">TBD.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#use-cases" id="use-cases">Use Cases</a>
 </h1>
@@ -625,7 +636,7 @@ ul.toc li {
         }
       },
       "propmap-location": {
-        "uri": "http://alto.exmaple.com/propmap/delay",
+        "uri": "http://alto.exmaple.com/propmap/location",
         "media-type": "application/alto-propmap+json",
         "accepts": "application/alto-propmapparams+json",
         "capabilities": {
@@ -798,7 +809,7 @@ Content-Type: application/alto-propmap+json
     },
     "pid:PID5": {
       "country": "FR"
-    },
+    }
   }
 }
 
@@ -1008,11 +1019,23 @@ Content-Type: application/alto-propmap+json
 <a href="#rfc.references">13.</a> References</h1>
 <h1 id="rfc.references.1">
 <a href="#rfc.references.1">13.1.</a> Normative References</h1>
-<table><tbody><tr>
+<table><tbody>
+<tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
 <a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
-</tr></tbody></table>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2387">[RFC2387]</b></td>
+<td class="top">
+<a>Levinson, E.</a>, "<a href="https://tools.ietf.org/html/rfc2387">The MIME Multipart/Related Content-type</a>", RFC 2387, DOI 10.17487/RFC2387, August 1998.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7285">[RFC7285]</b></td>
+<td class="top">
+<a>Alimi, R.</a>, <a>Penno, R.</a>, <a>Yang, Y.</a>, <a>Kiesel, S.</a>, <a>Previdi, S.</a>, <a>Roome, W.</a>, <a>Shalunov, S.</a> and <a>R. Woundy</a>, "<a href="https://tools.ietf.org/html/rfc7285">Application-Layer Traffic Optimization (ALTO) Protocol</a>", RFC 7285, DOI 10.17487/RFC7285, September 2014.</td>
+</tr>
+</tbody></table>
 <h1 id="rfc.references.2">
 <a href="#rfc.references.2">13.2.</a> Informative References</h1>
 <table><tbody>
@@ -1024,7 +1047,7 @@ Content-Type: application/alto-propmap+json
 <tr>
 <td class="reference"><b id="I-D.ietf-alto-unified-props-new">[I-D.ietf-alto-unified-props-new]</b></td>
 <td class="top">
-<a>Roome, W.</a>, <a>Chen, S.</a>, <a>Randriamasy, S.</a>, <a>Yang, Y.</a> and <a>J. Zhang</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-unified-props-new-03">Unified Properties for the ALTO Protocol</a>", Internet-Draft draft-ietf-alto-unified-props-new-03, March 2018.</td>
+<a>Roome, W.</a>, <a>Chen, S.</a>, <a>Randriamasy, S.</a>, <a>Yang, Y.</a> and <a>J. Zhang</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-unified-props-new-04">Unified Properties for the ALTO Protocol</a>", Internet-Draft draft-ietf-alto-unified-props-new-04, June 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="JSONIQ">[JSONIQ]</b></td>
@@ -1037,19 +1060,9 @@ Content-Type: application/alto-propmap+json
 <a>Freed, N.</a> and <a>N. Borenstein</a>, "<a href="https://tools.ietf.org/html/rfc2046">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>", RFC 2046, DOI 10.17487/RFC2046, November 1996.</td>
 </tr>
 <tr>
-<td class="reference"><b id="RFC2387">[RFC2387]</b></td>
-<td class="top">
-<a>Levinson, E.</a>, "<a href="https://tools.ietf.org/html/rfc2387">The MIME Multipart/Related Content-type</a>", RFC 2387, DOI 10.17487/RFC2387, August 1998.</td>
-</tr>
-<tr>
 <td class="reference"><b id="RFC7159">[RFC7159]</b></td>
 <td class="top">
 <a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC7285">[RFC7285]</b></td>
-<td class="top">
-<a>Alimi, R.</a>, <a>Penno, R.</a>, <a>Yang, Y.</a>, <a>Kiesel, S.</a>, <a>Previdi, S.</a>, <a>Roome, W.</a>, <a>Shalunov, S.</a> and <a>R. Woundy</a>, "<a href="https://tools.ietf.org/html/rfc7285">Application-Layer Traffic Optimization (ALTO) Protocol</a>", RFC 7285, DOI 10.17487/RFC7285, September 2014.</td>
 </tr>
 <tr>
 <td class="reference"><b id="W3CXQUERY">[W3CXQUERY]</b></td>
