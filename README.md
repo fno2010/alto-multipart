@@ -2,11 +2,11 @@
 
 ![Travis branch](https://img.shields.io/travis/openalto/alto-multipart/master.svg)
 
-This is the working area for the individual Internet-Draft, "draft-tbd-alto-multipart".
+This is the working area for the individual Internet-Draft, "draft-zhang-alto-multipart".
 
-* [Working Version](https://openalto.github.io/alto-multipart/#go.draft-tbd-alto-multipart.html)
-* [Latest Release](https://tools.ietf.org/html/draft-tbd-alto-multipart)
-* [Compare Working Version to Latest Release](https://openalto.github.io/alto-multipart/#go.draft-tbd-alto-multipart.diff)
+* [Working Version](https://openalto.github.io/alto-multipart/#go.draft-zhang-alto-multipart.html)
+* [Latest Release](https://tools.ietf.org/html/draft-zhang-alto-multipart)
+* [Compare Working Version to Latest Release](https://openalto.github.io/alto-multipart/#go.draft-zhang-alto-multipart.diff)
 
 ## Building the Draft
 

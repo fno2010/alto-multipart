@@ -1,8 +1,8 @@
 ---
-docname: draft-tbd-alto-multipart-latest
+docname: draft-zhang-alto-multipart-latest
 title: Multiple ALTO Resources Query Using Multipart Message
 abbrev: Multipart
-category: exp
+category: std
 
 ipr: trust200902
 area: Networks

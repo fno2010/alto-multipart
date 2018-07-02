@@ -10,7 +10,11 @@ An ALTO Multipart Query resource is requested using the HTTP POST method.
 
 ## Accept Input Parameters {#mp-query-params}
 
-The input parameters for a Multipart Query request are supplied in the entity body of the POST request. This document specifies the input parameters with a data format indicated by the media type `application/alto-multipartquery+alto`, which is a JSON object of type ReqMultipartQuery:
+The input parameters for a Multipart Query request are supplied in the entity
+body of the POST request. This document specifies the input parameters with
+a data format indicated by the media type
+`application/alto-multipartquery+alto`, which is a JSON object of type
+ReqMultipartQuery:
 
 ~~~
     object {
