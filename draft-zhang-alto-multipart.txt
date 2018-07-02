@@ -4,12 +4,12 @@
 
 ALTO WG                                                          S. Chen
 Internet-Draft                                                  J. Zhang
-Intended status: Experimental                          Tongji University
-Expires: January 2, 2019                                   July 01, 2018
+Intended status: Standards Track                       Tongji University
+Expires: January 4, 2019                                   July 03, 2018
 
 
          Multiple ALTO Resources Query Using Multipart Message
-                    draft-tbd-alto-multipart-latest
+                   draft-zhang-alto-multipart-latest
 
 Abstract
 
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 2, 2019.
+   This Internet-Draft will expire on January 4, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Chen & Zhang             Expires January 2, 2019                [Page 1]
+Chen & Zhang             Expires January 4, 2019                [Page 1]
 
 Internet-Draft                  Multipart                      July 2018
 
@@ -68,48 +68,48 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Background  . . . . . . . . . . . . . . . . . . . . . . .   3
      1.2.  Requirements Language . . . . . . . . . . . . . . . . . .   3
-     1.3.  Terminologies . . . . . . . . . . . . . . . . . . . . . .   4
-   2.  Use Cases . . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     2.1.  Simple Batch Query  . . . . . . . . . . . . . . . . . . .   4
-     2.2.  Properties Constrained Query  . . . . . . . . . . . . . .   4
-     2.3.  Path Vector Query . . . . . . . . . . . . . . . . . . . .   4
-   3.  Requirements  . . . . . . . . . . . . . . . . . . . . . . . .   4
-   4.  Overview of Approach  . . . . . . . . . . . . . . . . . . . .   5
-   5.  Multipart Query Resource  . . . . . . . . . . . . . . . . . .   5
-     5.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . .   5
-     5.2.  HTTP Method . . . . . . . . . . . . . . . . . . . . . . .   5
-     5.3.  Accept Input Parameters . . . . . . . . . . . . . . . . .   5
-     5.4.  Capabilities  . . . . . . . . . . . . . . . . . . . . . .   6
-     5.5.  Uses  . . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     5.6.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   6
-   6.  Protocol Errors . . . . . . . . . . . . . . . . . . . . . . .   6
-   7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     7.1.  IRD Example . . . . . . . . . . . . . . . . . . . . . . .   6
-     7.2.  Example 1: Simple Batch Query . . . . . . . . . . . . . .   8
-     7.3.  Example 2: Properties Constrained Query . . . . . . . . .  10
-     7.4.  Example 3: Path Vector Query  . . . . . . . . . . . . . .  13
-   8.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .  14
-     8.1.  Compatibility with Legacy ALTO Clients/Servers  . . . . .  14
-     8.2.  Compatibility with Existing Protocol Extensions . . . . .  14
-     8.3.  Compatibility with New Communication Mechanism  . . . . .  15
-   9.  Misc Considerations . . . . . . . . . . . . . . . . . . . . .  15
-     9.1.  Support Incremental Update  . . . . . . . . . . . . . . .  15
-     9.2.  Anonymous Resources . . . . . . . . . . . . . . . . . . .  15
-   10. Security Considerations . . . . . . . . . . . . . . . . . . .  15
-   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-     11.1.  application/alto-* Media Types . . . . . . . . . . . . .  15
-   12. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  17
-   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     13.1.  Normative References . . . . . . . . . . . . . . . . . .  17
-     13.2.  Informative References . . . . . . . . . . . . . . . . .  17
-   Appendix A.  Figures  . . . . . . . . . . . . . . . . . . . . . .  18
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
+   2.  Terminologies . . . . . . . . . . . . . . . . . . . . . . . .   4
+   3.  Use Cases . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     3.1.  Simple Batch Query  . . . . . . . . . . . . . . . . . . .   4
+     3.2.  Properties Constrained Query  . . . . . . . . . . . . . .   4
+     3.3.  Path Vector Query . . . . . . . . . . . . . . . . . . . .   5
+   4.  Requirements  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   5.  Overview of Approach  . . . . . . . . . . . . . . . . . . . .   6
+   6.  Multipart Query Resource  . . . . . . . . . . . . . . . . . .   6
+     6.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . .   6
+     6.2.  HTTP Method . . . . . . . . . . . . . . . . . . . . . . .   6
+     6.3.  Accept Input Parameters . . . . . . . . . . . . . . . . .   6
+     6.4.  Capabilities  . . . . . . . . . . . . . . . . . . . . . .   7
+     6.5.  Uses  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     6.6.  Response  . . . . . . . . . . . . . . . . . . . . . . . .   7
+   7.  Protocol Errors . . . . . . . . . . . . . . . . . . . . . . .   7
+   8.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  IRD Example . . . . . . . . . . . . . . . . . . . . . . .   8
+     8.2.  Example 1: Simple Batch Query . . . . . . . . . . . . . .   9
+     8.3.  Example 2: Properties Constrained Query . . . . . . . . .  11
+     8.4.  Example 3: Path Vector Query  . . . . . . . . . . . . . .  14
+   9.  Compatibility . . . . . . . . . . . . . . . . . . . . . . . .  15
+     9.1.  Compatibility with Legacy ALTO Clients/Servers  . . . . .  15
+     9.2.  Compatibility with Existing Protocol Extensions . . . . .  16
+     9.3.  Compatibility with New Communication Mechanism  . . . . .  16
+   10. Misc Considerations . . . . . . . . . . . . . . . . . . . . .  16
+     10.1.  Support Incremental Update . . . . . . . . . . . . . . .  16
+     10.2.  Anonymous Resources  . . . . . . . . . . . . . . . . . .  16
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .  16
+   12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
+     12.1.  application/alto-* Media Types . . . . . . . . . . . . .  16
+   13. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  18
+   14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     14.1.  Normative References . . . . . . . . . . . . . . . . . .  18
+     14.2.  Informative References . . . . . . . . . . . . . . . . .  18
+   Appendix A.  Figures  . . . . . . . . . . . . . . . . . . . . . .  19
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
 
 
 
 
 
-Chen & Zhang             Expires January 2, 2019                [Page 2]
+Chen & Zhang             Expires January 4, 2019                [Page 2]
 
 Internet-Draft                  Multipart                      July 2018
 
@@ -165,24 +165,27 @@ Internet-Draft                  Multipart                      July 2018
 
 
 
-Chen & Zhang             Expires January 2, 2019                [Page 3]
+Chen & Zhang             Expires January 4, 2019                [Page 3]
 
 Internet-Draft                  Multipart                      July 2018
 
 
-1.3.  Terminologies
+2.  Terminologies
 
    TBD.
 
-2.  Use Cases
+3.  Use Cases
 
-   We take the following potential use cases may requiring the multipart
-   query service.
+   We take the following potential use cases which may benefit from the
+   multipart query service.
 
-2.1.  Simple Batch Query
+3.1.  Simple Batch Query
 
    The simplest use case is to query a batch of ALTO resources in a
    single request.
+
+   Although the ALTO client can perform ALTO requests for multiple
+   times, it is not only inefficient but also inconsistent.
 
    For example, the ALTO server provides a network map resource A and a
    dependent cost map resource B.  Both resources may change frequently.
@@ -195,58 +198,115 @@ Internet-Draft                  Multipart                      July 2018
    This case requires the ALTO server to provide a way for the ALTO
    client to query multiple ALTO resources in a single transaction.
 
-2.2.  Properties Constrained Query
+3.2.  Properties Constrained Query
 
-   Some clients may need to query an endpoint property map first, and
-   find endpoints with some properties fitting some conditions.  And
-   then they query the endpoint cost of these endpoints.
+   Beyond the simple batch query, there are also some another use cases
+   requiring a new service for relational query.  For example, Some
+   clients may need to query an endpoint property map first, and find
+   endpoints with some properties fitting some conditions.  And then
+   they query the endpoint cost of these endpoints.
 
-2.3.  Path Vector Query
+   In this case, the endpoint cost query depends on the result of the
+   property map query.  Although the ALTO client can cache the whole
+   property map in its local storage, it is still not efficient and may
+   conduct the consistency issue if the property map changes frequently.
+   So it requires a new service to provide multiple dependent resources
+   efficiently and consistently.
 
-   [I-D.ietf-alto-path-vector] introduce an extension of ALTO to provide
-   path vector information by cost map and unified property map
-   [I-D.ietf-alto-unified-props-new].  The client using path vector
-   extension will usually query cost map and a generated dependent
-   property map.
+   A general multipart query service benefits the ALTO client in two
+   aspects:
 
-3.  Requirements
-
-   MPQ-Req1:  Query multiple ALTO resources in a single request, and
-      return the result in a single response.
-
-   MPQ-Req2:  Provide general filter schema for any ALTO resources.
-
-   MPQ-Req3:  Support joint query in some relationship.
+   o  It allows the ALTO client to specify the boolean test to reduce
+      the transmission of the useless data from the ALTO server.
 
 
 
-
-Chen & Zhang             Expires January 2, 2019                [Page 4]
+Chen & Zhang             Expires January 4, 2019                [Page 4]
 
 Internet-Draft                  Multipart                      July 2018
 
 
-4.  Overview of Approach
+   o  It compounds multiple ALTO information resources in a single
+      response to reduce the communication times.  Thus, the
+      transmission latency can be reduced.
 
-   Key techniques:
+3.3.  Path Vector Query
 
-   o  Multipart message [RFC2046] for compound resources.
+   Another use case requiring the multiple resource query is the
+   relational query between the on-demand generated resources.  A
+   straightforward example is the path vector query demonstrated in
+   [I-D.ietf-alto-path-vector].
 
-   o  JSON Query Language like XQuery [W3CXQUERY] and JSONiq [JSONIQ]
-      for general query process and relational joint query.
+   [I-D.ietf-alto-path-vector] introduces an extension of ALTO to
+   provide path vector information by cost map and unified property map
+   [I-D.ietf-alto-unified-props-new].  The client using path vector
+   extension will usually query cost map and a dynamically generated
+   property map sequentially.  It is even hard to cache the full data of
+   resources, because both the cost map and the property map are on-
+   demand generated by the query input here.  Thus, the only way to
+   reduce the time consumption is to compound the two resources.
 
-5.  Multipart Query Resource
+4.  Requirements
 
-5.1.  Media Type
+   From the use cases described in Section 3, there are three additional
+   requirements for ALTO protocol:
+
+   MPQ-Req1:  The ALTO protocol SHOULD allow the client to query
+      multiple ALTO resources in a single request, and return the result
+      in a single response.
+
+      It is the basic requirement to provide the query for the compound
+      resources.  Even simple cases can benefit if this requirement is
+      realized.
+
+   MPQ-Req2:  The ALTO protocol SHOULD provide general filter schema for
+      any ALTO resources.
+
+      Current filter schema in ALTO protocol only supports the simple
+      boolean test of numerical comparison.  And the boolean filtered
+      query is only supported by the cost map and the endpoint cost
+      resource.  It is not enough for the general cases.  Even simple
+      property map may require more general filter schema.
+
+   MPQ-Req3:  The ALTO protocol SHOULD support relational query for
+      mulitple joint resources.
+
+      Some ALTO resources are relational and cannot be used
+      individually.  The path vector query is such an example.  In these
+
+
+
+
+Chen & Zhang             Expires January 4, 2019                [Page 5]
+
+Internet-Draft                  Multipart                      July 2018
+
+
+      use cases, the support of relational query for multiple joint
+      resources is very helpful.
+
+5.  Overview of Approach
+
+   This document uses two key techniques to realize the general multiple
+   resources query:
+
+   o  Use Multipart message [RFC2046] to deliver compound resources.
+
+   o  Accept JSON Query Language like XQuery [W3CXQUERY] and JSONiq
+      [JSONIQ] for general query process and relational joint query.
+
+6.  Multipart Query Resource
+
+6.1.  Media Type
 
    "multipart/related" [RFC2387].
 
-5.2.  HTTP Method
+6.2.  HTTP Method
 
    An ALTO Multipart Query resource is requested using the HTTP POST
    method.
 
-5.3.  Accept Input Parameters
+6.3.  Accept Input Parameters
 
    The input parameters for a Multipart Query request are supplied in
    the entity body of the POST request.  This document specifies the
@@ -270,18 +330,18 @@ Internet-Draft                  Multipart                      July 2018
       be queried and how to query them.  Each ResourceQuery object MUST
       include the "resource-id" field to indicate which resource is to
       be queried.  If the queried resource requires the POST method, the
-      "input" field MUST be specified.  The value of the "input" field
-      MUST be either a JSONString or a JSONObject.  When its value is a
-      JSONObject, its format MUST be as the accept input parameters of
-      its resource.  When its value is a JSONString, it MUST be a
 
 
 
-Chen & Zhang             Expires January 2, 2019                [Page 5]
+Chen & Zhang             Expires January 4, 2019                [Page 6]
 
 Internet-Draft                  Multipart                      July 2018
 
 
+      "input" field MUST be specified.  The value of the "input" field
+      MUST be either a JSONString or a JSONObject.  When its value is a
+      JSONObject, its format MUST be as the accept input parameters of
+      its resource.  When its value is a JSONString, it MUST be a
       program written in the query language specified by the "query-
       lang" field.
 
@@ -290,7 +350,7 @@ Internet-Draft                  Multipart                      July 2018
       not specified in the request, the ALTO client SHOULD NOT use any
       query language in the "input" field.
 
-5.4.  Capabilities
+6.4.  Capabilities
 
    The capabilities are defined by an object of type
    MultipartQueryCapabilities:
@@ -302,7 +362,7 @@ Internet-Draft                  Multipart                      July 2018
    where "query-langs" is an array of JSONString to indicate which query
    languages are supported by this resource.
 
-5.5.  Uses
+6.5.  Uses
 
    An array with the resource ID(s) of resource(s) which this multipart
    query resource can compound.  The used resource can be any available
@@ -310,34 +370,37 @@ Internet-Draft                  Multipart                      July 2018
    "uses" field is not specified, all the available ALTO resources can
    be queried except for the multipart query resource.
 
-5.6.  Response
+6.6.  Response
 
    The response of multipart query resource is a multipart message.
    Each part of this multipart message is the response of a queried
    resource in the request.
 
-6.  Protocol Errors
+7.  Protocol Errors
 
-   TODO: We need to define new error type to indicate errors caused by
-   the queried resources instead of the Multipart Query resource.
+   TODO: Need to define new error type to indicate errors caused by the
+   queried resources instead of the Multipart Query resource.
 
-7.  Examples
+8.  Examples
 
-7.1.  IRD Example
+
+
+
+
+
+
+Chen & Zhang             Expires January 4, 2019                [Page 7]
+
+Internet-Draft                  Multipart                      July 2018
+
+
+8.1.  IRD Example
 
    Assume the root IRD is like the following:
 
      {
        "meta": {
            "path-vector": {
-
-
-
-Chen & Zhang             Expires January 2, 2019                [Page 6]
-
-Internet-Draft                  Multipart                      July 2018
-
-
              "cost-mode": "array",
              "cost-metric": "ane-path"
            },
@@ -379,6 +442,14 @@ Internet-Draft                  Multipart                      July 2018
            "capabilities": {
              "cost-constraints": true,
              "cost-type-names": [ "path-vector" ],
+
+
+
+Chen & Zhang             Expires January 4, 2019                [Page 8]
+
+Internet-Draft                  Multipart                      July 2018
+
+
            },
            "property-map": "propmap-availbw"
          },
@@ -386,14 +457,6 @@ Internet-Draft                  Multipart                      July 2018
            "uri": "http://alto.exmaple.com/propmap/availbw",
            "media-type": "application/alto-propmap+json",
            "accepts": "application/alto-propmapparams+json",
-
-
-
-Chen & Zhang             Expires January 2, 2019                [Page 7]
-
-Internet-Draft                  Multipart                      July 2018
-
-
            "capabilities": {
              "domain-types": [ "ane" ],
              "prop-types": [ "availbw" ]
@@ -419,7 +482,29 @@ Internet-Draft                  Multipart                      July 2018
        }
      }
 
-7.2.  Example 1: Simple Batch Query
+8.2.  Example 1: Simple Batch Query
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Chen & Zhang             Expires January 4, 2019                [Page 9]
+
+Internet-Draft                  Multipart                      July 2018
+
 
    POST /multipart HTTP/1.1
    Host: alto.example.com
@@ -441,14 +526,6 @@ Internet-Draft                  Multipart                      July 2018
    HTTP/1.1 200 OK
    Content-Lenght: [TBD]
    Content-Type: multipart/related; boundary=simple-batch-query
-
-
-
-
-Chen & Zhang             Expires January 2, 2019                [Page 8]
-
-Internet-Draft                  Multipart                      July 2018
-
 
    --simple-batch-query
    Content-Type: application/alto-networkmap+json
@@ -477,6 +554,14 @@ Internet-Draft                  Multipart                      July 2018
            "0.0.0.0/0"
          ],
          "ipv6" : [
+
+
+
+Chen & Zhang             Expires January 4, 2019               [Page 10]
+
+Internet-Draft                  Multipart                      July 2018
+
+
            "::/0"
          ]
        }
@@ -498,14 +583,6 @@ Internet-Draft                  Multipart                      July 2018
          "cost-mode": "numerical",
          "cost-metric": "routingcost"
        }
-
-
-
-Chen & Zhang             Expires January 2, 2019                [Page 9]
-
-Internet-Draft                  Multipart                      July 2018
-
-
      },
      "cost-map": {
        "PID1": { "PID1": 1,  "PID2": 5,  "PID3": 10 },
@@ -514,7 +591,7 @@ Internet-Draft                  Multipart                      July 2018
      }
    }
 
-7.3.  Example 2: Properties Constrained Query
+8.3.  Example 2: Properties Constrained Query
 
    NOTE: In this example, we use the "`" block to express the raw string
    with unescaped characters like "\n" and "\"".  It is not valid HTTP
@@ -536,28 +613,7 @@ Internet-Draft                  Multipart                      July 2018
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Chen & Zhang             Expires January 2, 2019               [Page 10]
+Chen & Zhang             Expires January 4, 2019               [Page 11]
 
 Internet-Draft                  Multipart                      July 2018
 
@@ -613,7 +669,7 @@ Internet-Draft                  Multipart                      July 2018
 
 
 
-Chen & Zhang             Expires January 2, 2019               [Page 11]
+Chen & Zhang             Expires January 4, 2019               [Page 12]
 
 Internet-Draft                  Multipart                      July 2018
 
@@ -669,12 +725,12 @@ Internet-Draft                  Multipart                      July 2018
 
 
 
-Chen & Zhang             Expires January 2, 2019               [Page 12]
+Chen & Zhang             Expires January 4, 2019               [Page 13]
 
 Internet-Draft                  Multipart                      July 2018
 
 
-7.4.  Example 3: Path Vector Query
+8.4.  Example 3: Path Vector Query
 
 POST /multipart HTTP/1.1
 Host: alto.example.com
@@ -725,7 +781,7 @@ Content-Type: application/alto-multipartquery+json
 
 
 
-Chen & Zhang             Expires January 2, 2019               [Page 13]
+Chen & Zhang             Expires January 4, 2019               [Page 14]
 
 Internet-Draft                  Multipart                      July 2018
 
@@ -766,81 +822,89 @@ Internet-Draft                  Multipart                      July 2018
      }
    }
 
-8.  Compatibility
+9.  Compatibility
 
-8.1.  Compatibility with Legacy ALTO Clients/Servers
+9.1.  Compatibility with Legacy ALTO Clients/Servers
 
-   TODO: Discuss the compatibility with the standard ALTO protocol,
-   especially the POST-based resources.
-
-8.2.  Compatibility with Existing Protocol Extensions
-
-   TODO: Discuss the compatibility with known documents only extending
-   the base protocol but not changing the basic request/response
-   mechanism.
+   The multipart query service is a new ALTO service using the new media
+   type.  So the legacy ALTO client cannot identify this service from
+   the IRD of the ALTO server supporting it.  And the legacy ALTO server
+   also cannot interpret the request of a multipart query service sent
+   by the ALTO client.
 
 
 
-Chen & Zhang             Expires January 2, 2019               [Page 14]
+
+
+
+Chen & Zhang             Expires January 4, 2019               [Page 15]
 
 Internet-Draft                  Multipart                      July 2018
 
 
-   o  ALTO Calendar
+9.2.  Compatibility with Existing Protocol Extensions
 
-   o  ALTO Multi-Cost
+   The multipart query service can use any ALTO resources exchanging
+   JSON data in request/response mechanism.  So all the known ALTO
+   extensions like ALTO Calendar [I-D.ietf-alto-cost-calendar], Multi-
+   Cost [RFC8189] and the Path Vector [I-D.ietf-alto-path-vector]
+   extension, which does not change the request/response mechanism, are
+   compatible with the multipart query service.
 
-   o  Path Vector
+9.3.  Compatibility with New Communication Mechanism
 
-8.3.  Compatibility with New Communication Mechanism
+   Since the multipart query service use multipart messages as the
+   response instead of the JSON data, the incremental update service
+   defined in [I-D.ietf-alto-incr-update-sse] does not support it.  If
+   the update service does not notify the incremental change to the ALTO
+   client but only notify the full replacement, it can still work.  But
+   it is very inefficient.  So an extension to integrate multipart query
+   and the incremental update smoothly is required.  HTTP/2 may be a
+   candidate solution to this problem.
 
-   TODO: Discuss the compatibility with the extension introducing new
-   communication mechanism:
+10.  Misc Considerations
 
-   o  ALTO Incremental Update using SSE
-
-9.  Misc Considerations
-
-9.1.  Support Incremental Update
+10.1.  Support Incremental Update
 
    Because the response body entry of the multipart query resource is
    not a single JSON object, it may not be compatible with the existing
    incremental update representation.
 
-9.2.  Anonymous Resources
+10.2.  Anonymous Resources
 
    Some use cases may need the server generates "anonymous" ALTO
    resources for the on-demand information.  The "anonymous" ALTO
    resources usually cannot appear alone but need to bind with some
    "non-anonymous" ALTO resources.
 
-10.  Security Considerations
+11.  Security Considerations
 
    Allow the ALTO clients to upload the query language script may not be
    safe.  The script injection and many potential attacks can be
    conducted.  The security issue should be discussed and considered.
 
-11.  IANA Considerations
+12.  IANA Considerations
 
-11.1.  application/alto-* Media Types
+12.1.  application/alto-* Media Types
 
    This document registers an additional ALTO media type, listed in
    Table 1.
 
-        +-------------+--------------------------+---------------+
-        | Type        | Subtype                  | Specification |
-        +-------------+--------------------------+---------------+
-        | application | alto-multipartquery+json | Section 5.3   |
-        +-------------+--------------------------+---------------+
-
-                   Table 1: Additional ALTO Media Type.
 
 
 
-Chen & Zhang             Expires January 2, 2019               [Page 15]
+Chen & Zhang             Expires January 4, 2019               [Page 16]
 
 Internet-Draft                  Multipart                      July 2018
 
+
+        +-------------+--------------------------+---------------+
+        | Type        | Subtype                  | Specification |
+        +-------------+--------------------------+---------------+
+        | application | alto-multipartquery+json | Section 6.3   |
+        +-------------+--------------------------+---------------+
+
+                   Table 1: Additional ALTO Media Type.
 
    Type name:  application
 
@@ -883,6 +947,13 @@ Internet-Draft                  Multipart                      July 2018
 
    Intended usage:  COMMON
 
+
+
+Chen & Zhang             Expires January 4, 2019               [Page 17]
+
+Internet-Draft                  Multipart                      July 2018
+
+
    Restrictions on usage:  n/a
 
    Author:  See Authors' Addresses section.
@@ -890,19 +961,11 @@ Internet-Draft                  Multipart                      July 2018
    Change controller:  Internet Engineering Task Force
       (mailto:iesg@ietf.org).
 
+13.  Acknowledgements
 
+14.  References
 
-
-Chen & Zhang             Expires January 2, 2019               [Page 16]
-
-Internet-Draft                  Multipart                      July 2018
-
-
-12.  Acknowledgements
-
-13.  References
-
-13.1.  Normative References
+14.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -919,13 +982,33 @@ Internet-Draft                  Multipart                      July 2018
               RFC 7285, DOI 10.17487/RFC7285, September 2014,
               <https://www.rfc-editor.org/info/rfc7285>.
 
-13.2.  Informative References
+14.2.  Informative References
+
+   [I-D.ietf-alto-cost-calendar]
+              Randriamasy, S., Yang, Y., Wu, Q., Lingli, D., and N.
+              Schwan, "ALTO Cost Calendar", draft-ietf-alto-cost-
+              calendar-06 (work in progress), July 2018.
+
+   [I-D.ietf-alto-incr-update-sse]
+              Roome, W., Yang, Y., and S. Chen, "ALTO Incremental
+              Updates Using Server-Sent Events (SSE)", draft-ietf-alto-
+              incr-update-sse-11 (work in progress), June 2018.
 
    [I-D.ietf-alto-path-vector]
               Bernstein, G., Chen, S., Gao, K., Lee, Y., Roome, W.,
               Scharf, M., Yang, Y., and J. Zhang, "ALTO Extension: Path
               Vector Cost Type", draft-ietf-alto-path-vector-03 (work in
               progress), March 2018.
+
+
+
+
+
+
+Chen & Zhang             Expires January 4, 2019               [Page 18]
+
+Internet-Draft                  Multipart                      July 2018
+
 
    [I-D.ietf-alto-unified-props-new]
               Roome, W., Chen, S., Randriamasy, S., Yang, Y., and J.
@@ -946,13 +1029,10 @@ Internet-Draft                  Multipart                      July 2018
               Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
               2014, <https://www.rfc-editor.org/info/rfc7159>.
 
-
-
-
-Chen & Zhang             Expires January 2, 2019               [Page 17]
-
-Internet-Draft                  Multipart                      July 2018
-
+   [RFC8189]  Randriamasy, S., Roome, W., and N. Schwan, "Multi-Cost
+              Application-Layer Traffic Optimization (ALTO)", RFC 8189,
+              DOI 10.17487/RFC8189, October 2017,
+              <https://www.rfc-editor.org/info/rfc8189>.
 
    [W3CXQUERY]
               Robie, J., Chamberlin, D., Dyck, M., and J. Snelson,
@@ -972,6 +1052,18 @@ Authors' Addresses
    China
 
    Email: dawn_chen_f@hotmail.com
+
+
+
+
+
+
+
+
+
+Chen & Zhang             Expires January 4, 2019               [Page 19]
+
+Internet-Draft                  Multipart                      July 2018
 
 
    Jingxuan Jensen Zhang
@@ -1005,4 +1097,24 @@ Authors' Addresses
 
 
 
-Chen & Zhang             Expires January 2, 2019               [Page 18]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Chen & Zhang             Expires January 4, 2019               [Page 20]
