@@ -8,6 +8,19 @@
 
 An ALTO Multipart Query resource is requested using the HTTP POST method.
 
+## Capabilities
+
+The capabilities are defined by an object of type MultipartQueryCapabilities:
+
+~~~
+    object {
+      JSONString query-langs<0..*>;
+    } MultipartQueryCapabilities;
+~~~
+
+where `query-langs` is an array of JSONString to indicate which query languages
+are supported by this resource.
+
 ## Accept Input Parameters {#mp-query-params}
 
 The input parameters for a Multipart Query request are supplied in the entity
@@ -45,19 +58,6 @@ query-lang:
   `query-langs` capability. If this field is not specified in the request, the
   ALTO client SHOULD NOT use any query language in the `input` field.
 
-## Capabilities
-
-The capabilities are defined by an object of type MultipartQueryCapabilities:
-
-~~~
-    object {
-      JSONString query-langs<0..*>;
-    } MultipartQueryCapabilities;
-~~~
-
-where `query-langs` is an array of JSONString to indicate which query languages
-are supported by this resource.
-
 ## Uses
 
 An array with the resource ID(s) of resource(s) which this multipart query
@@ -73,5 +73,26 @@ this multipart message is the response of a queried resource in the request.
 
 # Protocol Errors
 
-TODO: Need to define new error type to indicate errors caused by the queried
-resources instead of the Multipart Query resource.
+The validation of each `input` field of the multipart query input parameters
+depends on the queried resource:
+
+- If the `input` field of the multipart query input parameters is neither
+  a JSONObject nor a JSONString, the ALTO server SHOULD return the
+  E_INVALID_FIELD_TYPE error, unless a future protocol extension supports the
+  non-JSONObject input parameters.
+- If the `input` field of the multipart query input parameters is a JSONObject,
+  the ALTO server MUST validate the value using its queried resource and return
+  the corresponding error if it has.
+- If the `input` field of the multipart query input parameters is a JSONString:
+    - If the `query-lang` is not specified, the ALTO server MUST return the
+      E_INVALID_FIELD_TYPE error.
+    - If the `query-lang` is specified, the ALTO server MUST execute this
+      JSONString as a program written in the `query-lang`. If the execution
+      failed, the ALTO server MUST return the E_INVALID_FIELD_VALUE error. If
+      the execution succeed but the result fails to pass the validation of the
+      queried resource, the ALTO server MUST return the E_INVALID_FIELD_VALUE
+      error and attach the error message returned by the queried resource into
+      the `message` field of the ALTO error message.
+
+<!-- TODO: Need to define new error type to indicate errors caused by the
+queried resources instead of the Multipart Query resource. -->
