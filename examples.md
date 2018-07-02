@@ -188,7 +188,8 @@ Content-Type: application/alto-multipartquery+json
     {
       "resource-id": "my-default-costmap",
       "input": `
-        let $propmap := collection("propmap-location").("property-map")
+        let $propmap := collection("propmap-location")
+                        .("property-map")
         return {
           "cost-type": {
             "cost-mode": "numerical",
@@ -297,7 +298,8 @@ Content-Type: application/alto-multipartquery+json
     {
       "resource-id": "propmap-availbw",
       "input": `
-        let $propmap := collection("endpiont-path-vector").("endpoint-cost-map")
+        let $propmap := collection("endpiont-path-vector")
+                        .("endpoint-cost-map")
         return {
           "entities": [
             distinct-values(flatten(
