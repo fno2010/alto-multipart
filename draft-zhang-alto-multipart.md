@@ -38,7 +38,7 @@ author:
     ins: J. Zhang
     name: Jingxuan Jensen Zhang
     organization: Tongji University
-    email: jingxuan.zhang@tongji.edu.cn
+    email: jingxuan.n.zhang@gmail.com
     street: 4800 Cao'An Hwy
     city: Shanghai
     code: 201804
