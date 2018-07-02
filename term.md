@@ -1,3 +1,3 @@
-## Terminologies
+# Terminologies
 
 TBD.

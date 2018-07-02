@@ -1,7 +1,8 @@
 # Overview of Approach
 
-Key techniques:
+This document uses two key techniques to realize the general multiple resources
+query:
 
-- Multipart message {{?RFC2046}} for compound resources.
-- JSON Query Language like XQuery {{W3CXQUERY}} and JSONiq {{JSONIQ}} for
+- Use Multipart message {{?RFC2046}} to deliver compound resources.
+- Accept JSON Query Language like XQuery {{W3CXQUERY}} and JSONiq {{JSONIQ}} for
   general query process and relational joint query.

@@ -69,5 +69,5 @@ this multipart message is the response of a queried resource in the request.
 
 # Protocol Errors
 
-TODO: We need to define new error type to indicate errors caused by the queried
+TODO: Need to define new error type to indicate errors caused by the queried
 resources instead of the Multipart Query resource.

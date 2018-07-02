@@ -49,8 +49,11 @@ normative:
   RFC2387:
   RFC7285:
 informative:
+  RFC8189:
   I-D.ietf-alto-path-vector:
   I-D.ietf-alto-unified-props-new:
+  I-D.ietf-alto-cost-calendar:
+  I-D.ietf-alto-incr-update-sse:
   W3CXQUERY:
     title: "XQuery 3.0: An XML query language"
     author:
