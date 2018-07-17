@@ -1,6 +1,6 @@
 # Introduction
 
-## Background
+<!-- ## Background -->
 
 Application-Layer Traffic Optimization (ALTO) protocol {{RFC7285}} and its
 extensions already define several kinds of information resources, like network
@@ -31,8 +31,3 @@ This document defines a new ALTO services for: (1) querying multiple ALTO resour
 in a single request/response, and (2) supporting general-purpose JSON query
 languages to resolve the relational query.
 
-## Requirements Language
-
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
-interpreted as described in {{RFC2119}}.

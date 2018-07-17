@@ -108,6 +108,12 @@ one's response. So some advanced query schema is required. This document
 proposes an extension to support the multiple ALTO resources query with HTTP
 multipart message and the existing JSON query languages.
 
+--- note_Requirements_Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in {{RFC2119}}.
+
 --- middle
 
 {::include introduction.md}

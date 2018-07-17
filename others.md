@@ -79,7 +79,7 @@ Optional parameters:
 
 Encoding considerations:
 : Encoding considerations are identical to those specified for the
-  `application/json` media type. See {{?RFC7159}}.
+  `application/json` media type. See {{?RFC8259}}.
 
 Security considerations:
 : Security considerations related to the generation and consumption of ALTO
