@@ -1,6 +1,7 @@
 # ALTO Multipart Query Service
 
-![Travis branch](https://img.shields.io/travis/openalto/alto-multipart/master.svg)
+[![Travis branch](https://img.shields.io/travis/openalto/alto-multipart/master.svg)](https://travis-ci.org/openalto/alto-multipart)
+[![GitHub tag](https://img.shields.io/github/tag/openalto/alto-multipart.svg)](https://github.com/openalto/alto-multipart/tags)
 
 This is the working area for the individual Internet-Draft, "draft-zhang-alto-multipart".
 
