@@ -278,6 +278,9 @@ ul.toc li {
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Terminologies">
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Resource Query Entry">
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Resource Response Entry">
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Resource Response Entry Body">
 <link href="#rfc.section.3" rel="Chapter" title="3 Use Cases">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Simple Batch Query">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Properties Constrained Query">
@@ -292,6 +295,8 @@ ul.toc li {
 <link href="#rfc.section.6.5" rel="Chapter" title="6.5 Uses">
 <link href="#rfc.section.6.6" rel="Chapter" title="6.6 Response">
 <link href="#rfc.section.7" rel="Chapter" title="7 Protocol Errors">
+<link href="#rfc.section.7.1" rel="Chapter" title="7.1 Partial Error">
+<link href="#rfc.section.7.2" rel="Chapter" title="7.2 Entire Error">
 <link href="#rfc.section.8" rel="Chapter" title="8 Examples">
 <link href="#rfc.section.8.1" rel="Chapter" title="8.1 IRD Example">
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 Example 1: Simple Batch Query">
@@ -315,14 +320,14 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.9 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.11.1 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Chen, S. and J. Zhang" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-zhang-alto-multipart-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-17" />
-  <meta name="dct.abstract" content="Many ALTO use cases involve multiple ALTO information resources like network map, cost map and property map to achieve their own goal. To make the ALTO client query them one by one is not only inefficient but also possible to introduce inconsistent issues. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. So some advanced query schema is required. This document proposes an extension to support the multiple ALTO resources query with HTTP multipart message and the existing JSON query languages." />
-  <meta name="description" content="Many ALTO use cases involve multiple ALTO information resources like network map, cost map and property map to achieve their own goal. To make the ALTO client query them one by one is not only inefficient but also possible to introduce inconsistent issues. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. So some advanced query schema is required. This document proposes an extension to support the multiple ALTO resources query with HTTP multipart message and the existing JSON query languages." />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-12-10" />
+  <meta name="dct.abstract" content="Many ALTO use cases involve multiple ALTO information resources like different network maps, cost maps and property maps to achieve their own specific goals.  To make the ALTO client query them one by one is not only inefficient but also error-prone. The inconsistent responses can be performed because of the unstable communication environment, and finally conduct the unexpected traffic optimization. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. To address those issues, some advanced query schema is required. This document proposes an ALTO extension to support the multiple ALTO resources query in the single request using the HTTP multipart message and the existing JSON query languages." />
+  <meta name="description" content="Many ALTO use cases involve multiple ALTO information resources like different network maps, cost maps and property maps to achieve their own specific goals.  To make the ALTO client query them one by one is not only inefficient but also error-prone. The inconsistent responses can be performed because of the unstable communication environment, and finally conduct the unexpected traffic optimization. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. To address those issues, some advanced query schema is required. This document proposes an ALTO extension to support the multiple ALTO resources query in the single request using the HTTP multipart message and the existing JSON query languages." />
 
 </head>
 
@@ -344,8 +349,8 @@ ul.toc li {
 <td class="right">Tongji University</td>
 </tr>
 <tr>
-<td class="left">Expires: January 18, 2019</td>
-<td class="right">July 17, 2018</td>
+<td class="left">Expires: June 13, 2019</td>
+<td class="right">December 10, 2018</td>
 </tr>
 
     	
@@ -356,14 +361,14 @@ ul.toc li {
   <span class="filename">draft-zhang-alto-multipart-latest</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>Many ALTO use cases involve multiple ALTO information resources like network map, cost map and property map to achieve their own goal. To make the ALTO client query them one by one is not only inefficient but also possible to introduce inconsistent issues. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. So some advanced query schema is required. This document proposes an extension to support the multiple ALTO resources query with HTTP multipart message and the existing JSON query languages.</p>
+<p>Many ALTO use cases involve multiple ALTO information resources like different network maps, cost maps and property maps to achieve their own specific goals.  To make the ALTO client query them one by one is not only inefficient but also error-prone. The inconsistent responses can be performed because of the unstable communication environment, and finally conduct the unexpected traffic optimization. Further more, some ALTO information resources may have correlation, which means one&#8217;s input parameters may depends on another one&#8217;s response. To address those issues, some advanced query schema is required. This document proposes an ALTO extension to support the multiple ALTO resources query in the single request using the HTTP multipart message and the existing JSON query languages.</p>
 <h1><a>Requirements Language</a></h1>
 <p>The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 18, 2019.</p>
+<p>This Internet-Draft will expire on June 13, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -377,7 +382,13 @@ ul.toc li {
 </li>
 <li>2.   <a href="#rfc.section.2">Terminologies</a>
 </li>
-<li>3.   <a href="#rfc.section.3">Use Cases</a>
+<ul><li>2.1.   <a href="#rfc.section.2.1">Resource Query Entry</a>
+</li>
+<li>2.2.   <a href="#rfc.section.2.2">Resource Response Entry</a>
+</li>
+<li>2.3.   <a href="#rfc.section.2.3">Resource Response Entry Body</a>
+</li>
+</ul><li>3.   <a href="#rfc.section.3">Use Cases</a>
 </li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">Simple Batch Query</a>
 </li>
@@ -405,7 +416,11 @@ ul.toc li {
 </li>
 </ul><li>7.   <a href="#rfc.section.7">Protocol Errors</a>
 </li>
-<li>8.   <a href="#rfc.section.8">Examples</a>
+<ul><li>7.1.   <a href="#rfc.section.7.1">Partial Error</a>
+</li>
+<li>7.2.   <a href="#rfc.section.7.2">Entire Error</a>
+</li>
+</ul><li>8.   <a href="#rfc.section.8">Examples</a>
 </li>
 <ul><li>8.1.   <a href="#rfc.section.8.1">IRD Example</a>
 </li>
@@ -454,8 +469,8 @@ ul.toc li {
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">Application-Layer Traffic Optimization (ALTO) protocol <a href="#RFC7285" class="xref">[RFC7285]</a> and its extensions already define several kinds of information resources, like network map, cost map, property map, to expose useful network informations to applications. However, many applications cannot only use a single information resource to achieve their optimization goal. Retrieving multiple ALTO information resources is very common in many ALTO use cases.</p>
-<p id="rfc.section.1.p.2">Although the ALTO client can query multiple ALTO information resources one by one, it is not inefficient. And because the network delay between different requests and the frequent change of ALTO information resources, the responses may be inconsistent.</p>
+<p id="rfc.section.1.p.1">Application-Layer Traffic Optimization (ALTO) protocol <a href="#RFC7285" class="xref">[RFC7285]</a> and its extensions already define several types of information resources, like Network Map, Cost Map and Property Map, to expose useful network informations to applications. However, many applications do not only use a single information resource to perform their traffic optimization. Retrieving multiple ALTO information resources is very common in many ALTO use cases.</p>
+<p id="rfc.section.1.p.2">Using the current ALTO framework defined in <a href="#RFC7285" class="xref">[RFC7285]</a>, the ALTO client can only query multiple ALTO information resources one by one. It is not only inefficient but also error-prone. Because of the network delay between different requests and the frequent change of ALTO information resources, the responses received by the ALTO client may be inconsistent.</p>
 <p id="rfc.section.1.p.3">Further more, some ALTO information resources have known dependencies, which means the ALTO client may need one&#8217;s response to decide another one&#8217;s query input parameters.</p>
 <p id="rfc.section.1.p.4">To be summarized, we need the multipart query service for three reasons:</p>
 <p></p>
@@ -469,11 +484,22 @@ ul.toc li {
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#terminologies" id="terminologies">Terminologies</a>
 </h1>
-<p id="rfc.section.2.p.1">TBD.</p>
+<h1 id="rfc.section.2.1">
+<a href="#rfc.section.2.1">2.1.</a> <a href="#resource-query-entry" id="resource-query-entry">Resource Query Entry</a>
+</h1>
+<p id="rfc.section.2.1.p.1">TBD.</p>
+<h1 id="rfc.section.2.2">
+<a href="#rfc.section.2.2">2.2.</a> <a href="#resource-response-entry" id="resource-response-entry">Resource Response Entry</a>
+</h1>
+<p id="rfc.section.2.2.p.1">TBD.</p>
+<h1 id="rfc.section.2.3">
+<a href="#rfc.section.2.3">2.3.</a> <a href="#resource-response-entry-body" id="resource-response-entry-body">Resource Response Entry Body</a>
+</h1>
+<p id="rfc.section.2.3.p.1">TBD.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#usage" id="usage">Use Cases</a>
 </h1>
-<p id="rfc.section.3.p.1">We take the following potential use cases which may benefit from the multipart query service.</p>
+<p id="rfc.section.3.p.1">The following use cases can benefit from the multipart query service.</p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> <a href="#simple-batch-query" id="simple-batch-query">Simple Batch Query</a>
 </h1>
@@ -584,7 +610,14 @@ ul.toc li {
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#protocol-errors" id="protocol-errors">Protocol Errors</a>
 </h1>
-<p id="rfc.section.7.p.1">The validation of each <samp>input</samp> field of the multipart query input parameters depends on the queried resource:</p>
+<p id="rfc.section.7.p.1">At the top level, the request of ALTO Multipart Query resource may conduct two types of errors: Partial Error and Entire Error.</p>
+<h1 id="rfc.section.7.1">
+<a href="#rfc.section.7.1">7.1.</a> <a href="#partial-error" id="partial-error">Partial Error</a>
+</h1>
+<p id="rfc.section.7.1.p.1">The Partial Error only occurs when the value of the <samp>resource-id</samp> field or the <samp>input</samp> field is invalid.</p>
+<p id="rfc.section.7.1.p.2">When the Partial Error occurs, the ALTO server MUST still return the response in the media type <samp>multipart/related</samp>. For the resource query entry with an error, the ALTO server MUST specify the <samp>Content-Type</samp> of its resource response entry as <samp>application/alto-error+json</samp>, and include the ALTO error message in its resource response entry body. For the resource query entry without any error, the ALTO server MUST perform its query request normally.</p>
+<p id="rfc.section.7.1.p.3">The value of the <samp>resource-id</samp> field is invalid when this resource id is not defined by the Information Resource Directory. In this case, the ALTO server MUST return the E_INVALID_FIELD_VALUE error.</p>
+<p id="rfc.section.7.1.p.4">The validation of each <samp>input</samp> field of the multipart query input parameters depends on the queried resource:</p>
 <p></p>
 
 <ul>
@@ -596,6 +629,12 @@ ul.toc li {
 </ul>
 </li>
 </ul>
+<p id="rfc.section.7.1.p.6">The syntax error is an Entire Error.</p>
+<h1 id="rfc.section.7.2">
+<a href="#rfc.section.7.2">7.2.</a> <a href="#entire-error" id="entire-error">Entire Error</a>
+</h1>
+<p id="rfc.section.7.2.p.1">Any other invalid request will conduct the Entire Error.</p>
+<p id="rfc.section.7.2.p.2">When the Entire Error occurs, the ALTO server MUST return the error response in the media type <samp>application/alto-error+json</samp> instead of <samp>multipart/related</samp>. The process of the Entire Error is as defined in Section 8.5 of <a href="#RFC7285" class="xref">[RFC7285]</a>.</p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#examples" id="examples">Examples</a>
 </h1>
@@ -969,7 +1008,7 @@ Content-Type: application/alto-propmap+json
 <h1 id="rfc.section.10.1">
 <a href="#rfc.section.10.1">10.1.</a> <a href="#support-incremental-update" id="support-incremental-update">Support Incremental Update</a>
 </h1>
-<p id="rfc.section.10.1.p.1">Because the response body entry of the multipart query resource is not a single JSON object, it may not be compatible with the existing incremental update representation.</p>
+<p id="rfc.section.10.1.p.1">Because the response body entry of the multipart query resource is not a single JSON object, it may not be compatible with the current incremental update representation used in <a href="#I-D.ietf-alto-incr-update-sse" class="xref">[I-D.ietf-alto-incr-update-sse]</a>.</p>
 <h1 id="rfc.section.10.2">
 <a href="#rfc.section.10.2">10.2.</a> <a href="#anonymous-resources" id="anonymous-resources">Anonymous Resources</a>
 </h1>
@@ -977,7 +1016,18 @@ Content-Type: application/alto-propmap+json
 <h1 id="rfc.section.11">
 <a href="#rfc.section.11">11.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.11.p.1">Allow the ALTO clients to upload the query language script may not be safe. The script injection and many potential attacks can be conducted. The security issue should be discussed and considered.</p>
+<p id="rfc.section.11.p.1">Allow the ALTO clients to upload the query language script may not be safe. The code injection and many potential attacks can be conducted. The security issue should be discussed and considered.</p>
+<p id="rfc.section.11.p.2">To avoid the attacks like the code injection, this document recommends the following approaches:</p>
+<p></p>
+
+<dl>
+<dt>Database Isolation:</dt>
+<dd style="margin-left: 8">Some clients may attempt to access the secure database inside the server.  Isolate the data into the different databases can reduce the risk of the information leak.</dd>
+<dt>Application Container Isolation:</dt>
+<dd style="margin-left: 8">Attackers may inject harmful code into the input query programs to attempt to access the system control. To avoid this, each query process is recommended to be isolated using the application container.</dd>
+<dt>Resource Limit:</dt>
+<dd style="margin-left: 8">Even attackers cannot get the permission to crack the data or the system, they can still inject some heavy-load programs to consume the server resources.  Thus, limiting the memory usage and execution time of each query process is highly recommended.</dd>
+</dl>
 <h1 id="rfc.section.12">
 <a href="#rfc.section.12">12.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
@@ -1074,12 +1124,12 @@ Content-Type: application/alto-propmap+json
 <tr>
 <td class="reference"><b id="I-D.ietf-alto-cost-calendar">[I-D.ietf-alto-cost-calendar]</b></td>
 <td class="top">
-<a>Randriamasy, S.</a>, <a>Yang, Y.</a>, <a>Wu, Q.</a>, <a>Lingli, D.</a> and <a>N. Schwan</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-cost-calendar-07">ALTO Cost Calendar</a>", Internet-Draft draft-ietf-alto-cost-calendar-07, July 2018.</td>
+<a>Randriamasy, S.</a>, <a>Yang, Y.</a>, <a>Wu, Q.</a>, <a>Lingli, D.</a> and <a>N. Schwan</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-cost-calendar-09">ALTO Cost Calendar</a>", Internet-Draft draft-ietf-alto-cost-calendar-09, November 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-alto-incr-update-sse">[I-D.ietf-alto-incr-update-sse]</b></td>
 <td class="top">
-<a>Roome, W.</a>, <a>Yang, Y.</a> and <a>S. Chen</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-incr-update-sse-12">ALTO Incremental Updates Using Server-Sent Events (SSE)</a>", Internet-Draft draft-ietf-alto-incr-update-sse-12, July 2018.</td>
+<a>Roome, W.</a>, <a>Yang, Y.</a> and <a>S. Chen</a>, "<a href="https://tools.ietf.org/html/draft-ietf-alto-incr-update-sse-15">ALTO Incremental Updates Using Server-Sent Events (SSE)</a>", Internet-Draft draft-ietf-alto-incr-update-sse-15, December 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-alto-path-vector">[I-D.ietf-alto-path-vector]</b></td>
