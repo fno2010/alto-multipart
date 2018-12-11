@@ -73,6 +73,27 @@ this multipart message is the response of a queried resource in the request.
 
 # Protocol Errors
 
+At the top level, the request of ALTO Multipart Query resource may conduct two
+types of errors: Partial Error and Entire Error.
+
+## Partial Error
+
+The Partial Error only occurs when the value of the `resource-id` field or the
+`input` field is invalid.
+
+<!-- TODO: Define the term `resource query entry` and `resource response entry` -->
+
+When the Partial Error occurs, the ALTO server MUST still return the response in
+the media type `multipart/related`. For the resource query entry with an error,
+the ALTO server MUST specify the `Content-Type` of its resource response entry
+as `application/alto-error+json`, and include the ALTO error message in its
+resource response entry body. For the resource query entry without any error,
+the ALTO server MUST perform its query request normally.
+
+The value of the `resource-id` field is invalid when this resource id is not
+defined by the Information Resource Directory. In this case, the ALTO server
+MUST return the E_INVALID_FIELD_VALUE error.
+
 The validation of each `input` field of the multipart query input parameters
 depends on the queried resource:
 
@@ -94,5 +115,12 @@ depends on the queried resource:
       error and attach the error message returned by the queried resource into
       the `message` field of the ALTO error message.
 
-<!-- TODO: Need to define new error type to indicate errors caused by the
-queried resources instead of the Multipart Query resource. -->
+The syntax error is an Entire Error.
+
+## Entire Error
+
+Any other invalid request will conduct the Entire Error.
+
+When the Entire Error occurs, the ALTO server MUST return the error response in
+the media type `application/alto-error+json` instead of `multipart/related`. The
+process of the Entire Error is as defined in Section 8.5 of {{RFC7285}}.

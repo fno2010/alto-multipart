@@ -356,3 +356,5 @@ Content-Type: application/alto-propmap+json
   }
 }
 ~~~
+
+<!-- TODO: Examples for Partial Error and Entire Error -->

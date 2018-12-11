@@ -99,14 +99,17 @@ informative:
 
 --- abstract
 
-Many ALTO use cases involve multiple ALTO information resources like network
-map, cost map and property map to achieve their own goal. To make the ALTO
-client query them one by one is not only inefficient but also possible to
-introduce inconsistent issues. Further more, some ALTO information resources may
-have correlation, which means one's input parameters may depends on another
-one's response. So some advanced query schema is required. This document
-proposes an extension to support the multiple ALTO resources query with HTTP
-multipart message and the existing JSON query languages.
+Many ALTO use cases involve multiple ALTO information resources like different
+network maps, cost maps and property maps to achieve their own specific goals.
+To make the ALTO client query them one by one is not only inefficient but also
+error-prone. The inconsistent responses can be performed because of the unstable
+communication environment, and finally conduct the unexpected traffic
+optimization. Further more, some ALTO information resources may have
+correlation, which means one's input parameters may depends on another one's
+response. To address those issues, some advanced query schema is required. This
+document proposes an ALTO extension to support the multiple ALTO resources query
+in the single request using the HTTP multipart message and the existing JSON
+query languages.
 
 --- note_Requirements_Language
 

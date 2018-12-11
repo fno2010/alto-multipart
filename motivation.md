@@ -1,7 +1,6 @@
 # Use Cases {#usage}
 
-We take the following potential use cases which may benefit from the multipart
-query service.
+The following use cases can benefit from the multipart query service.
 
 ## Simple Batch Query
 

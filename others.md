@@ -2,9 +2,6 @@
 
 ## Compatibility with Legacy ALTO Clients/Servers ##
 
-<!-- TODO: Discuss the compatibility with the standard ALTO protocol,
-especially the POST-based resources. -->
-
 The multipart query service is a new ALTO service using the new media type. So
 the legacy ALTO client cannot identify this service from the IRD of the ALTO
 server supporting it. And the legacy ALTO server also cannot interpret the
@@ -18,9 +15,6 @@ request/response mechanism. So all the known ALTO extensions like ALTO Calendar
 {{I-D.ietf-alto-path-vector}} extension, which does not change the
 request/response mechanism, are compatible with the multipart query service.
 
-<!-- TODO: Discuss the compatibility with known documents only extending the
-base protocol but not changing the basic request/response mechanism. -->
-
 ## Compatibility with New Communication Mechanism ##
 
 Since the multipart query service use multipart messages as the response
@@ -31,16 +25,13 @@ full replacement, it can still work. But it is very inefficient. So an
 extension to integrate multipart query and the incremental update smoothly is
 required. HTTP/2 may be a candidate solution to this problem.
 
-<!-- TODO: Discuss the compatibility with the extension introducing new
-communication mechanism: ALTO Incremental Update using SSE -->
-
 # Misc Considerations
 
 ## Support Incremental Update
 
 Because the response body entry of the multipart query resource is not a single
-JSON object, it may not be compatible with the existing incremental update
-representation.
+JSON object, it may not be compatible with the current incremental update
+representation used in {{I-D.ietf-alto-incr-update-sse}}.
 
 ## Anonymous Resources
 
@@ -51,8 +42,27 @@ alone but need to bind with some "non-anonymous" ALTO resources.
 # Security Considerations
 
 Allow the ALTO clients to upload the query language script may not be safe. The
-script injection and many potential attacks can be conducted. The security issue
+code injection and many potential attacks can be conducted. The security issue
 should be discussed and considered.
+
+To avoid the attacks like the code injection, this document recommends the
+following approaches:
+
+Database Isolation:
+: Some clients may attempt to access the secure database inside the server.
+  Isolate the data into the different databases can reduce the risk of the
+  information leak.
+
+Application Container Isolation:
+: Attackers may inject harmful code into the input query programs to attempt to
+  access the system control. To avoid this, each query process is recommended to
+  be isolated using the application container.
+
+Resource Limit:
+: Even attackers cannot get the permission to crack the data or the system, they
+  can still inject some heavy-load programs to consume the server resources.
+  Thus, limiting the memory usage and execution time of each query process is
+  highly recommended.
 
 # IANA Considerations
 
