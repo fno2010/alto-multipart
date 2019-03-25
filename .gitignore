@@ -8,6 +8,7 @@ lib/
 
 # Cache
 .refcache
+tracker.log
 
 # Do not upload the generated file
 lib

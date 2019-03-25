@@ -26,15 +26,6 @@ pi:
 
 author:
  -
-    ins: S. D. Chen
-    name: Shiwei Dawn Chen
-    organization: Tongji University
-    email: dawn_chen_f@hotmail.com
-    street: 4800 Cao'An Hwy
-    city: Shanghai
-    code: 201804
-    country: China
- -
     ins: J. Zhang
     name: Jingxuan Jensen Zhang
     organization: Tongji University
@@ -45,6 +36,8 @@ author:
     country: China
 
 normative:
+  RFC2045:
+  RFC2046:
   RFC2119:
   RFC2387:
   RFC7285:

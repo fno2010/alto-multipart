@@ -15,6 +15,7 @@ request/response mechanism. So all the known ALTO extensions like ALTO Calendar
 {{I-D.ietf-alto-path-vector}} extension, which does not change the
 request/response mechanism, are compatible with the multipart query service.
 
+<!--
 ## Compatibility with New Communication Mechanism ##
 
 Since the multipart query service use multipart messages as the response
@@ -24,6 +25,7 @@ does not notify the incremental change to the ALTO client but only notify the
 full replacement, it can still work. But it is very inefficient. So an
 extension to integrate multipart query and the incremental update smoothly is
 required. HTTP/2 may be a candidate solution to this problem.
+-->
 
 # Misc Considerations
 

@@ -124,3 +124,17 @@ Any other invalid request will conduct the Entire Error.
 When the Entire Error occurs, the ALTO server MUST return the error response in
 the media type `application/alto-error+json` instead of `multipart/related`. The
 process of the Entire Error is as defined in Section 8.5 of {{RFC7285}}.
+
+# Incremental Update Integration
+
+This document defines a compatible incremental update process for Multipart
+Query resource with {{I-D.ietf-alto-incr-update-sse}}.
+
+An ALTO server's IRD can export an Update Stream service defined in
+{{I-D.ietf-alto-incr-update-sse}} including the Resource ID of a Multipart
+Query resource in the `uses` field. When an ALTO client subscribe the
+incremental update for this Multipart Query resource, the ALTO server sends the
+whole Multipart response message back at the first data update message. Then
+the ALTO server subscribe all nodes in this multipart resource tree
+automatically. Once data updated later, the ALTO server publishes the update
+for each node individually.
