@@ -4,7 +4,7 @@
 
 Application-Layer Traffic Optimization (ALTO) protocol {{RFC7285}} and its
 extensions already define several types of information resources, like Network
-Map, Cost Map and Property Map, to expose useful network informations to
+Map, Cost Map and Property Map, to expose useful network information to
 applications. However, many applications do not only use a single information
 resource to perform their traffic optimization. Retrieving multiple ALTO
 information resources is very common in many ALTO use cases.
@@ -22,7 +22,7 @@ input parameters.
 To be summarized, we need the multipart query service for three reasons:
 
 - Clients may want to query multiple ALTO information resources in a single
-  request to reduce the time consumption.
+  request to reduce the network latency.
 - Clients may want to query multiple ALTO resources consistently, which means
   the server should guarantee the responses of all resources are generated at
   the same time.
@@ -31,4 +31,3 @@ To be summarized, we need the multipart query service for three reasons:
 This document defines a new ALTO services for: (1) querying multiple ALTO resources
 in a single request/response, and (2) supporting general-purpose JSON query
 languages to resolve the relational query.
-
