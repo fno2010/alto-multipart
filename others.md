@@ -32,8 +32,8 @@ required. HTTP/2 may be a candidate solution to this problem.
 ## Return ALTO Information Resources over HTTP/2
 
 HTTP/2 {{RFC7540}} provides new features like streams and multiplexing that
-can essentially improve the web interface communication latency. As the
-deployment of HTTP/2, it is valuable to consider how to transit the ALTO
+can essentially reduce the web interface communication latency. As the growth
+of deployment of HTTP/2, it is valuable to consider how to transit the ALTO
 information resources over HTTP/2.
 
 The multipart query service defined in this document includes two parts: the
@@ -45,18 +45,24 @@ streams using HTTP/2 server push. Each stream only needs to include a single
 ALTO information resource. The benefit is that the Server can include
 additional meta information in the HTTP HEADERS frame of each stream. And the
 Client can parse each ALTO information resource in parallel.
-
 However, the multiple-resource query schema is required to be reused to keep
-the consistent request semantics. The Server requires the Client to send the
-multiple-resource query request in a single HTTP/2 stream. It will enforce
-the Server to generate the response to different ALTO information resources
-based on the same database snapshot.
+the consistent request semantics. If the Client wants to receive consistent
+query results, it should send a single multiple-resource query request over
+the HTTP/2 stream to enforce the Server to generate the response to
+different ALTO information resources based on the same database snapshot.
 
 ## Support Incremental Update
 
-Because the response body entry of the multipart query resource is not a single
+According to Section 5.2 of {{I-D.ietf-alto-incr-update-sse}}, the update
+stream service can use concatenation of the substream-id, the '.' separator
+and a Content-ID to identify the update to each part of a multipart response.
+Thus, each part of a multiple-resource query response MUST include a
+Content-ID, if the Server provides an update stream service defined in
+{{I-D.ietf-alto-incr-update-sse}} for this multiple-resource query service.
+
+<!-- Because the response body entry of the multipart query resource is not a single
 JSON object, it may not be compatible with the current incremental update
-representation used in {{I-D.ietf-alto-incr-update-sse}}.
+representation used in {{I-D.ietf-alto-incr-update-sse}}. -->
 
 ## Anonymous Resources
 

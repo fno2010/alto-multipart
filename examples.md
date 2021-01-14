@@ -22,11 +22,11 @@ Assume the root IRD is like the following:
     },
     "resources": {
       "my-default-networkmap": {
-        "uri": "http://alto.example.com/networkmap",
+        "uri": "https://alto.example.com/networkmap",
         "media-type": "application/alto-networkmap+json"
       },
       "my-default-costmap": {
-        "uri": "http://alto.example.com/costmap",
+        "uri": "https://alto.example.com/costmap",
         "media-type": "application/alto-costmap+json",
         "capabilities": {
           "cost-type-names": [ "num-routingcost" ]
@@ -34,7 +34,7 @@ Assume the root IRD is like the following:
         "uses": [ "my-default-networkmap" ]
       },
       "my-filtered-costmap": {
-        "uri": "http://alto.example.com/costmap/filtered",
+        "uri": "https://alto.example.com/costmap/filtered",
         "media-type": "application/alto-costmap+json",
         "accepts": "application/alto-costmapfilter+json",
         "capabilities": {
@@ -43,7 +43,7 @@ Assume the root IRD is like the following:
         "uses": [ "my-default-networkmap" ]
       },
       "endpoint-path-vector": {
-        "uri": "http://alto.exmaple.com/endpointcost",
+        "uri": "https://alto.exmaple.com/endpointcost",
         "media-type": "application/alto-endpointcost+json",
         "accepts": "application/alto-endpointcostparams+json",
         "capabilities": {
@@ -53,29 +53,45 @@ Assume the root IRD is like the following:
         "property-map": "propmap-availbw"
       },
       "propmap-availbw-delay": {
-        "uri": "http://alto.exmaple.com/propmap/availbw",
+        "uri": "https://alto.exmaple.com/propmap/availbw",
         "media-type": "application/alto-propmap+json",
         "accepts": "application/alto-propmapparams+json",
+        "uses": [ "endpoint-path-vector" ],
         "capabilities": {
-          "domain-types": [ "ane" ],
-          "prop-types": [ "availbw" ]
+          "mappings": {
+            "endpoint-path-vector.ane": [ "availbw" ]
+          }
         }
       },
       "propmap-location": {
-        "uri": "http://alto.exmaple.com/propmap/location",
+        "uri": "https://alto.exmaple.com/propmap/location",
         "media-type": "application/alto-propmap+json",
         "accepts": "application/alto-propmapparams+json",
+        "uses": [ "my-default-networkmap" ],
         "capabilities": {
-          "domain-types": [ "pid" ],
-          "prop-types": [ "country", "state" ]
+          "mappings": {
+            "my-default-networkmap.pid": [ "country", "state" ]
+          }
         }
       },
       "multipart-query": {
-        "uri": "http://alto.example.com/multipart",
+        "uri": "https://alto.example.com/multipart",
         "media-type": "multipart/related",
         "accepts": "application/alto-multipartquery+json",
         "capabilities": {
           "query-langs": [ "xquery", "jsoniq" ]
+        }
+      },
+      "update-multipart-query": {
+        "uri": "https://alto.example.com/updates/multipart",
+        "media-type": "text/event-stream",
+        "uses": [ "multipart-query" ],
+        "accepts": "application/alto-updatestreamparams+json",
+        "capabilities": {
+          "incremental-change-media-types": {
+            "multipart-query": "application/merge-patch+json"
+          },
+          "support-stream-control": true
         }
       }
     }
@@ -109,6 +125,7 @@ Content-Lenght: [TBD]
 Content-Type: multipart/related; boundary=simple-batch-query
 
 --simple-batch-query
+Content-ID: my-default-networkmap
 Content-Type: application/alto-networkmap+json
 
 {
@@ -142,6 +159,7 @@ Content-Type: application/alto-networkmap+json
 }
 
 --simple-batch-query
+Content-ID: my-default-costmap
 Content-Type: application/alto-costmap+json
 
 {
@@ -163,6 +181,7 @@ Content-Type: application/alto-costmap+json
     "PID3": { "PID1": 20, "PID2": 15  }
   }
 }
+--simple-batch-query
 ~~~
 
 ## Example 2: Properties Constrained Query
@@ -220,6 +239,7 @@ Content-Lenght: [TBD]
 Content-Type: multipart/related; boundary=prop-const-query
 
 --prop-const-query
+Content-ID: propmap-location
 Content-Type: application/alto-propmap+json
 
 {
@@ -247,6 +267,7 @@ Content-Type: application/alto-propmap+json
 }
 
 --prop-const-query
+Content-ID: my-default-costmap
 Content-Type: application/alto-costmap+json
 
 {
@@ -267,6 +288,7 @@ Content-Type: application/alto-costmap+json
     }
   }
 }
+--prop-const-query
 ~~~
 
 ## Example 3: Path Vector Query
@@ -325,6 +347,7 @@ Content-Length: [TBD]
 Content-Type: multipart/related; boundary=path-vector-query
 
 --path-vector-query
+Content-ID: endpoint-path-vector
 Content-Type: application/alto-endpointcost+json
 
 {
@@ -344,6 +367,7 @@ Content-Type: application/alto-endpointcost+json
 }
 
 --path-vector-query
+Content-ID: propmap-availbw
 Content-Type: application/alto-propmap+json
 
 {
@@ -355,6 +379,67 @@ Content-Type: application/alto-propmap+json
     "ane:L007": { "availbw": 35 }
   }
 }
+--path-vector-query
+~~~
+
+## Example 4: Incremental Updates
+
+~~~
+POST /updates/multipart
+Host: alto.example.com
+Accept: text/event-stream,application/alto-error+json
+Content-Length: [TBD]
+Content-Type: application/alto-updatestreamparams+json
+
+{
+  "add": {
+    "multipart-query": {
+      "resource-id": "multipart-query",
+      "input": {
+        "resources": [
+          {
+            "resource-id": "my-default-networkmap"
+          },
+          {
+            "resource-id": "my-default-costmap"
+          }
+        ]
+      }
+    }
+  }
+}
+~~~
+
+~~~
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Type: text/event-stream
+
+event: application/alto-updatestreamcontrol+json
+data: {"control-uri":
+data:  "https://alto.example.com/updates/streams/1414"}
+
+event: multipart/related;boundary=example-update,multipart-query
+data: --simple-batch-query
+data: Content-ID: netmap
+data: Content-Type: application/alto-networkmap+json
+data:
+data: { ... data (object) of network map ... }
+data:
+data: --simple-batch-query
+data: Content-ID: costmap
+data: Content-Type: application/alto-costmap+json
+data:
+data: { .. data (object) of cost map ... }
+data: --simple-batch-query
+
+   (pause)
+
+event: application/merge-patch+json,multipart-query.netmap
+data: { ... merge patch for updates of network map ... }
+
+event: application/merge-patch+json,multipart-query.costmap
+data: { ... merge patch for updates of cost map ... }
 ~~~
 
 <!-- TODO: Examples for Partial Error and Entire Error -->
