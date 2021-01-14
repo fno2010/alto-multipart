@@ -11,7 +11,7 @@ request of a multipart query service sent by the ALTO client.
 
 The multipart query service can use any ALTO resources exchanging JSON data in
 request/response mechanism. So all the known ALTO extensions like ALTO Calendar
-{{I-D.ietf-alto-cost-calendar}}, Multi-Cost {{RFC8189}} and the Path Vector
+{{RFC8896}}, Multi-Cost {{RFC8189}} and the Path Vector
 {{I-D.ietf-alto-path-vector}} extension, which does not change the
 request/response mechanism, are compatible with the multipart query service.
 
@@ -53,12 +53,12 @@ different ALTO information resources based on the same database snapshot.
 
 ## Support Incremental Update
 
-According to Section 5.2 of {{I-D.ietf-alto-incr-update-sse}}, the update
+According to Section 5.2 of {{RFC8895}}, the update
 stream service can use concatenation of the substream-id, the '.' separator
 and a Content-ID to identify the update to each part of a multipart response.
 Thus, each part of a multiple-resource query response MUST include a
 Content-ID, if the Server provides an update stream service defined in
-{{I-D.ietf-alto-incr-update-sse}} for this multiple-resource query service.
+{{RFC8895}} for this multiple-resource query service.
 
 <!-- Because the response body entry of the multipart query resource is not a single
 JSON object, it may not be compatible with the current incremental update

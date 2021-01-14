@@ -128,10 +128,10 @@ process of the Entire Error is as defined in Section 8.5 of {{RFC7285}}.
 # Incremental Update Integration
 
 This document defines a compatible incremental update process for Multipart
-Query resource with {{I-D.ietf-alto-incr-update-sse}}.
+Query resource with {{RFC8895}}.
 
 An ALTO server's IRD can export an Update Stream service defined in
-{{I-D.ietf-alto-incr-update-sse}} including the Resource ID of a Multipart
+{{RFC8895}} including the Resource ID of a Multipart
 Query resource in the `uses` field. When an ALTO client subscribe the
 incremental update for this Multipart Query resource, the ALTO server sends the
 whole Multipart response message back at the first data update message. Then

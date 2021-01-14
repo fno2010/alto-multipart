@@ -104,7 +104,7 @@ Assume the root IRD is like the following:
 POST /multipart HTTP/1.1
 Host: alto.example.com
 Accept: multipart/related, application/alto-error+json
-Content-Lenght: [TBD]
+Content-Lenght: TBD
 Content-Type: application/alto-multipartquery+json
 
 {
@@ -121,7 +121,7 @@ Content-Type: application/alto-multipartquery+json
 
 ~~~
 HTTP/1.1 200 OK
-Content-Lenght: [TBD]
+Content-Lenght: TBD
 Content-Type: multipart/related; boundary=simple-batch-query
 
 --simple-batch-query
@@ -195,7 +195,7 @@ block should be escaped.
 POST /multipart HTTP/1.1
 Host: alto.example.com
 Accept: multipart/related, application/alto-error+json
-Content-Lenght: [TBD]
+Content-Lenght: TBD
 Content-Type: application/alto-multipartquery+json
 
 {
@@ -235,7 +235,7 @@ Content-Type: application/alto-multipartquery+json
 
 ~~~
 HTTP/1.1 200 OK
-Content-Lenght: [TBD]
+Content-Lenght: TBD
 Content-Type: multipart/related; boundary=prop-const-query
 
 --prop-const-query
@@ -297,7 +297,7 @@ Content-Type: application/alto-costmap+json
 POST /multipart HTTP/1.1
 Host: alto.example.com
 Accept: multipart/related, application/alto-error+json
-Content-Lenght: [TBD]
+Content-Lenght: TBD
 Content-Type: application/alto-multipartquery+json
 
 {
@@ -343,7 +343,7 @@ Content-Type: application/alto-multipartquery+json
 
 ~~~
 HTTP/1.1 200 OK
-Content-Length: [TBD]
+Content-Length: TBD
 Content-Type: multipart/related; boundary=path-vector-query
 
 --path-vector-query
@@ -388,7 +388,7 @@ Content-Type: application/alto-propmap+json
 POST /updates/multipart
 Host: alto.example.com
 Accept: text/event-stream,application/alto-error+json
-Content-Length: [TBD]
+Content-Length: TBD
 Content-Type: application/alto-updatestreamparams+json
 
 {
