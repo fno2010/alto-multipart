@@ -110,7 +110,7 @@ depends on the queried resource:
     - If the `query-lang` is specified, the ALTO server MUST execute this
       JSONString as a program written in the `query-lang`. If the execution
       failed, the ALTO server MUST return the E_INVALID_FIELD_VALUE error. If
-      the execution succeed but the result fails to pass the validation of the
+      the execution succeeds but the result fails to pass the validation of the
       queried resource, the ALTO server MUST return the E_INVALID_FIELD_VALUE
       error and attach the error message returned by the queried resource into
       the `message` field of the ALTO error message.
@@ -132,9 +132,9 @@ Query resource with {{RFC8895}}.
 
 An ALTO server's IRD can export an Update Stream service defined in
 {{RFC8895}} including the Resource ID of a Multipart
-Query resource in the `uses` field. When an ALTO client subscribe the
+Query resource in the `uses` field. When an ALTO client subscribes the
 incremental update for this Multipart Query resource, the ALTO server sends the
 whole Multipart response message back at the first data update message. Then
-the ALTO server subscribe all nodes in this multipart resource tree
+the ALTO server subscribes all nodes in this multipart resource tree
 automatically. Once data updated later, the ALTO server publishes the update
 for each node individually.

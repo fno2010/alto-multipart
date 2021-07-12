@@ -15,7 +15,7 @@ inefficient but also error-prone. Because of the network delay between different
 requests and the frequent change of ALTO information resources, the responses
 received by the ALTO client may be inconsistent.
 
-Further more, some ALTO information resources have known dependencies, which
+Furthermore, some ALTO information resources have known dependencies, which
 means the ALTO client may need one's response to decide another one's query
 input parameters.
 
@@ -28,6 +28,6 @@ To be summarized, we need the multipart query service for three reasons:
   the same time.
 - Some use cases need to query multiple ALTO resources with a joint relationship.
 
-This document defines a new ALTO services for: (1) querying multiple ALTO resources
+This document defines a new ALTO service for: (1) querying multiple ALTO resources
 in a single request/response, and (2) supporting general-purpose JSON query
 languages to resolve the relational query.

@@ -187,7 +187,7 @@ Content-Type: application/alto-costmap+json
 ## Example 2: Properties Constrained Query
 
 NOTE: In this example, we use the "\`" block to express the raw string with
-unescaped characters like `\n` and `\"`. It is not valid HTTP body, but only
+unescaped characters like `\n` and `\"`. It is not a valid HTTP body, but only
 used to better present. When the request is sent to the ALTO server, the "\`"
 block should be escaped.
 

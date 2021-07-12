@@ -66,7 +66,7 @@ representation used in {{I-D.ietf-alto-incr-update-sse}}. -->
 
 ## Anonymous Resources
 
-Some use cases may need the server generates "anonymous" ALTO resources for the
+Some use cases may need the server to generate "anonymous" ALTO resources for the
 on-demand information. The "anonymous" ALTO resources usually cannot appear
 alone but need to bind with some "non-anonymous" ALTO resources.
 
